@@ -1,16 +1,17 @@
-import { Database } from "./repository/DataBaseRepository"
+import { Database } from "./repository/Database"
 import { ClienteService } from "./services/ClienteService"
 import { DistribuicaoService } from "./services/DistribuicaoService"
 import { MedicamentoService } from "./services/MedicamentoService"
 import { UsuarioService } from "./services/UsuarioService"
+import { ClienteMenu } from "./view/CLienteView"
 
 Database.iniciarConexao()
 
-const ClienteServico = new ClienteService()
+/*const ClienteServico = new ClienteService()
 async function testeListarClientes() {
     console.table(await ClienteServico.listarClientes())
 }
-//testeListarClientes()
+testeListarClientes()
 
 
 const UsuarioServico = new UsuarioService()
@@ -54,3 +55,8 @@ async function teste_inserirUsuario() {
     UsuarioServico.inserirUsuario('Marcos', 'tetudo@.com', 'mpp', 'mpp')
 }
 teste_inserirUsuario()
+*/
+const cliente_Menu = new ClienteMenu
+async function teste_ClienteMenu () {
+    await cliente_Menu.clienteMenu()
+} teste_ClienteMenu()

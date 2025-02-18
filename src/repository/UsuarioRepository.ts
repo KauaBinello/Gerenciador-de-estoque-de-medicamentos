@@ -1,5 +1,5 @@
 import { Pool } from "pg"
-import { Database } from "./DataBaseRepository"
+import { Database } from "./Database"
 import { Usuario } from "../entity/Usuario"
 
 export class UsuarioRepository {

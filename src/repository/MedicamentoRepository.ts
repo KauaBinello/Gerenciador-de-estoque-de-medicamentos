@@ -1,6 +1,6 @@
 import { Pool } from "pg"
 import { Medicamento } from "../entity/Medicamento.ts"
-import { Database } from "./DataBaseRepository.ts"
+import { Database } from "./Database"
 
 export class MedicamentoRepository {
 
