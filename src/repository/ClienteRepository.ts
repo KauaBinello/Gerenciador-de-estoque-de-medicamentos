@@ -41,7 +41,7 @@ export class ClienteRepository {
         return lista
     }
 
-    public async buscaInformacoes(id: number): Promise<Cliente[]> {
+    public async buscarInformacoes(id: number): Promise<Cliente[]> {
         let query = 'SELECT * FROM pi.clientes WHERE id = $1'
         const busca = await this.pool.query(query, [id])
 
@@ -53,7 +53,7 @@ export class ClienteRepository {
         return lista
     }
 
-    public async atualizaCliente(id: number, coluna: string, registro: string): Promise<void> {
+    public async atualizarCliente(id: number, coluna: string, registro: string): Promise<void> {
         const query = `UPDATE pi.clientes SET ${coluna} = $1 WHERE id = $2`
         const result = await this.pool.query(query, [registro, id])
     }

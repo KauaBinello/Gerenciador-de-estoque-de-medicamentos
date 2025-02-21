@@ -1,4 +1,3 @@
-import { Cliente } from "../entity/Cliente"
 import { ClienteService } from "../services/ClienteService"
 import promptSync from "prompt-sync"
 
@@ -58,7 +57,7 @@ export class ClienteMenu {
             case '4':
                 let procurarPorNome = await this.prompt('Qual o nome do cliente que deseja procurar? ')
                 let procurarPorID = await this.cliente.exibirID(procurarPorNome)
-                console.table(await this.cliente.buscaInformacoes(procurarPorID[0]))
+                console.table(await this.cliente.buscarInformacoes(procurarPorID[0]))
                 return this.clienteMenu()
 
             case '5':
@@ -66,7 +65,7 @@ export class ClienteMenu {
                 let atualizarPorID = await this.cliente.exibirID(atualizarPorNome)
                 let coluna = await this.prompt("O que deseja atualizar? ")
                 let registro = await this.prompt("Para o que desejar atualizar? ")
-                await this.cliente.atualizaCliente(atualizarPorID[0], coluna, registro)
+                await this.cliente.atualizarCliente(atualizarPorID[0], coluna, registro)
                 console.log('Cliente atualizado com sucesso')
                 return this.clienteMenu()
 

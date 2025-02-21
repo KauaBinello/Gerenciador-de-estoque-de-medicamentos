@@ -20,12 +20,12 @@ export class ClienteService {
         return await this.repo.exibirID(nome)
     }
 
-    public async buscaInformacoes(id: number): Promise<Cliente[]> {
-        return await this.repo.buscaInformacoes(id)
+    public async buscarInformacoes(id: number): Promise<Cliente[]> {
+        return await this.repo.buscarInformacoes(id)
     }
 
-    public async atualizaCliente(id: number, coluna: string, registro: string): Promise<void> {
-        await this.repo.atualizaCliente(id, coluna, registro)
+    public async atualizarCliente(id: number, coluna: string, registro: string): Promise<void> {
+        await this.repo.atualizarCliente(id, coluna, registro)
     }
 
     public async deletarCliente(id: number) {

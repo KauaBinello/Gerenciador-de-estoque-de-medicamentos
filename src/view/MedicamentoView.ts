@@ -1,13 +1,12 @@
-import { Medicamento } from "../entity/Medicamento"
 import { MedicamentoService } from "../services/MedicamentoService"
 import promptSync from "prompt-sync"
 
 export class MedicamentoMenu {
-    private cliente: MedicamentoService
+    private medicamento: MedicamentoService
     private prompt: promptSync
 
     constructor() {
-        this.cliente = new MedicamentoService
+        this.medicamento = new MedicamentoService
         this.prompt = promptSync()
     }
 
@@ -33,7 +32,7 @@ export class MedicamentoMenu {
 
         switch (opcao) {
             case '1':
-                console.table(await this.cliente.listarMedicamentos())
+                console.table(await this.medicamento.listarMedicamentos())
                 return this.medicamentoMenu()
 
             case '2':
@@ -41,35 +40,35 @@ export class MedicamentoMenu {
                 let embalagem = await this.prompt('Qual as informações de embalagem do medicamento? ')
                 let saldo = await this.prompt('Qual o saldo do medicamento? ')
                 let validade = await this.prompt('Qual a data de validade do medicamento? ')
-                await this.cliente.insesirMedicamento(nome, embalagem, saldo, validade)
+                await this.medicamento.inserirMedicamento(nome, embalagem, saldo, validade)
                 console.log('Medicamento inserido com sucesso! ')
                 return this.medicamentoMenu()
 
             case '3':
                 let exibirPorNome = await this.prompt('Qual o nome do medicamento que deseja procurar? ')
-                console.log(await this.cliente.exibirID(exibirPorNome))
+                console.log(await this.medicamento.exibirID(exibirPorNome))
                 return this.medicamentoMenu()
 
             case '4':
                 let procurarPorNome = await this.prompt('Qual o nome do medicamento que deseja procurar? ')
-                let procurarPorID = await this.cliente.exibirID(procurarPorNome)
-                console.table(await this.cliente.buscaInformacoes(procurarPorID[0]))
+                let procurarPorID = await this.medicamento.exibirID(procurarPorNome)
+                console.table(await this.medicamento.buscarInformacoes(procurarPorID[0]))
                 return this.medicamentoMenu()
 
             case '5':
                 let atualizarPorNome = await this.prompt('Qual o nome do medicamento que deseja atualizar? ')
-                let atualizarPorID = await this.cliente.exibirID(atualizarPorNome)
+                let atualizarPorID = await this.medicamento.exibirID(atualizarPorNome)
                 let coluna = await this.prompt("O que deseja atualizar? ")
                 let registro = await this.prompt("Para o que desejar atualizar? ")
-                await this.cliente.atualizaMedicamento(atualizarPorID[0], coluna, registro)
+                await this.medicamento.atualizarMedicamento(atualizarPorID[0], coluna, registro)
                 console.log('Medicamento atualizado com sucesso')
                 return this.medicamentoMenu()
 
             case '6':
                 let deletarPorNome = await this.prompt('Qual o nome do medicamento que deseja deletar? ')
-                let deletarPorID = await this.cliente.exibirID(deletarPorNome)
-                await this.cliente.deletarMedicamento(deletarPorID[0])
-                console.log('Cliente deletado com sucesso! ')
+                let deletarPorID = await this.medicamento.exibirID(deletarPorNome)
+                await this.medicamento.deletarMedicamento(deletarPorID[0])
+                console.log('Usuário deletado com sucesso! ')
                 return this.medicamentoMenu()
 
             case '7':
