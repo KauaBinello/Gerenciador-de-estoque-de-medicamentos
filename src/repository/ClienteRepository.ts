@@ -1,6 +1,7 @@
 import { Pool } from "pg"
 import { Database } from "./Database"
 import { Cliente } from "../entity/Cliente"
+import { ClienteMenu } from "../view/CLienteView"
 
 export class ClienteRepository {
 
@@ -10,7 +11,7 @@ export class ClienteRepository {
         this.pool = Database.iniciarConexao()
     }
 
-    async listarClientes(): Promise<Cliente[]> {
+    public async listarClientes(): Promise<Cliente[]> {
 
         const query = "SELECT * FROM pi.clientes"
         const result = await this.pool.query(query)
@@ -24,18 +25,23 @@ export class ClienteRepository {
         return listaClientes
     }
 
-    async exibirID(nome: string): Promise<number[]> {
+    public async inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimento: Date) {
+        let query = 'INSERT INTO pi.clientes (nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, nascimento) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)'
+        await this.pool.query(query, [nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, nascimento])
+    }
+
+    public async exibirID(nome: string): Promise<number[]> {
         const query = 'SELECT id FROM pi.clientes WHERE nome ilike $1'
         const id = await this.pool.query(query, [nome])
 
-        const lista: number[] = []
+        let lista: number[] = []
         for (const row of id.rows) {
             lista.push(row.id)
         }
         return lista
     }
 
-    async buscaPorID(id: number): Promise<Cliente[]> {
+    public async buscaInformacoes(id: number): Promise<Cliente[]> {
         let query = 'SELECT * FROM pi.clientes WHERE id = $1'
         const busca = await this.pool.query(query, [id])
 
@@ -47,8 +53,14 @@ export class ClienteRepository {
         return lista
     }
 
-    async inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimento: Date) {
-        let query = 'INSERT INTO pi.clientes (nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, nascimento) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)'
-        await this.pool.query(query, [nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, nascimento])
+    public async atualizaCliente(id: number, coluna: string, registro: string): Promise<void> {
+        const query = `UPDATE pi.clientes SET ${coluna} = $1 WHERE id = $2`
+        const result = await this.pool.query(query, [registro, id])
+    }
+
+    public async deletarCliente(id: number) {
+        let query = 'DELETE FROM pi.clientes WHERE id = $1'
+        const result = await this.pool.query(query, [id])
+        return result
     }
 }
