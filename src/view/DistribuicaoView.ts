@@ -1,12 +1,21 @@
 import promptSync from "prompt-sync"
 import { DistribuicaoService } from "../services/DistribuicaoService"
+import { ClienteService } from "../services/ClienteService"
+import { MedicamentoService } from "../services/MedicamentoService"
+import { UsuarioService } from "../services/UsuarioService"
 
 export class DistribuicaoMenu {
+    private usuario: UsuarioService
+    private cliente: ClienteService
+    private medicamento: MedicamentoService
     private distribuicao: DistribuicaoService
     private prompt: promptSync
 
     constructor() {
-        this.distribuicao = new DistribuicaoService
+        this.usuario = new UsuarioService()
+        this.cliente = new ClienteService()
+        this.medicamento = new MedicamentoService()
+        this.distribuicao = new DistribuicaoService()
         this.prompt = promptSync()
     }
 
@@ -38,13 +47,21 @@ export class DistribuicaoMenu {
                 return this.distribuicaoMenu()
 
             case '2':
-                let nome = await this.prompt('Qual o nome do usuário? ')
-                let email = await this.prompt('Qual o e-mail do usuário? ')
-                let login = await this.prompt('Qual o login do usuário? ')
-                let senha = await this.prompt('Qual a senha de validade do usuário? ')
-                await this.usuario.inserirUsuario(nome, email, login, senha)
-                console.log('Usuário inserido com sucesso! ')
-                return this.usuarioMenu()
+                let nome = await this.prompt('Qual o nome do medicamento? ')
+                let medicamento_id = await this.medicamento.exibirID(nome)
+
+                let quantidade = await this.prompt('Qual a quantidade a distribuir? ')
+                let saida = await new Date()
+
+                let usuario = await this.prompt('Qual o nome do usuario? ')
+                let usuario_id = await this.usuario.exibirID(usuario)
+
+                let cliente = await this.prompt('Qual o nome do cliente? ')
+                let cliente_id = await this.cliente.exibirID(cliente)
+
+                await this.distribuicao.distribuirMedicamento(medicamento_id[0], quantidade, saida, usuario_id[0], cliente_id[0])
+                console.log('Medicamento distruibuido com sucesso! ')
+                return this.distribuicaoMenu()
 
             case '3':
                 let exibirPorNome = await this.prompt('Qual o nome do usuário que deseja procurar? ')
@@ -78,14 +95,14 @@ export class DistribuicaoMenu {
 
             case '8':
 
-            
+
             case '9':
                 console.log("Você saiu do sistema!");
                 break;
 
             default:
                 console.log("Opção inválida! Tente novamente.");
-                return this.usuarioMenu()
+                return this.distribuicaoMenu()
         }
     }
 }

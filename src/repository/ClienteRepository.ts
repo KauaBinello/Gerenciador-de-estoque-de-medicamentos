@@ -1,7 +1,7 @@
 import { Pool } from "pg"
 import { Database } from "./Database"
 import { Cliente } from "../entity/Cliente"
-import { ClienteMenu } from "../view/CLienteView"
+import { ClienteMenu } from "../view/ClienteView"
 
 export class ClienteRepository {
 

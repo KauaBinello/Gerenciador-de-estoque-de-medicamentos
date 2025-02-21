@@ -5,7 +5,7 @@ export class UsuarioService {
     private repo: UsuarioRepository
 
     constructor() {
-        this.repo = new UsuarioRepository
+        this.repo = new UsuarioRepository()
     }
 
     async listarUSuarios(): Promise<Usuario[]> {
@@ -37,4 +37,5 @@ export class UsuarioService {
     public async deletarUsuario(id: number) {
         await this.repo.deletarUsuario(id)
     }
+
 }
