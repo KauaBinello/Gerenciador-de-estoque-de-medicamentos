@@ -37,5 +37,4 @@ export class UsuarioService {
     public async deletarUsuario(id: number) {
         await this.repo.deletarUsuario(id)
     }
-
 }
