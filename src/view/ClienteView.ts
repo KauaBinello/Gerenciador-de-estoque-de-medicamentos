@@ -17,8 +17,6 @@ export class ClienteMenu {
         console.log("");
         console.log("Menu de clientes ");
         console.log("");
-        console.log("Selecione a opção desejada ");
-        console.log("");
         console.log("1 - Listar clientes ");
         console.log("2 - Cadastrar cliente ");
         console.log("3 - Buscar ID do cliente ");
@@ -77,17 +75,11 @@ export class ClienteMenu {
                 return this.clienteMenu()
 
             case '7':
-                console.log("Você saiu do sistema!");
                 break;
 
             default:
                 console.log("Opção inválida! Tente novamente.");
                 return this.clienteMenu()
         }
-    }
-
-
-    public async exibirMenu(): Promise<void> {
-        await this.clienteMenu()
     }
 }

@@ -72,7 +72,6 @@ export class UsuarioMenu {
                 return this.usuarioMenu()
 
             case '7':
-                console.log("Você saiu do sistema!");
                 break;
 
             default:

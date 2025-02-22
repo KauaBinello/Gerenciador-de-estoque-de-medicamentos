@@ -17,8 +17,6 @@ export class MedicamentoMenu {
         console.log("");
         console.log("Menu de medicamentos ");
         console.log("");
-        console.log("Selecione a opção desejada ");
-        console.log("");
         console.log("1 - Listar medicamentos ");
         console.log("2 - Cadastrar medicamentos ");
         console.log("3 - Buscar ID do medicamento ");
@@ -68,11 +66,11 @@ export class MedicamentoMenu {
                 let deletarPorNome = await this.prompt('Qual o nome do medicamento que deseja deletar? ')
                 let deletarPorID = await this.medicamento.exibirID(deletarPorNome)
                 await this.medicamento.deletarMedicamento(deletarPorID[0])
-                console.log('Usuário deletado com sucesso! ')
+                console.log('Medicamento deletado com sucesso! ')
                 return this.medicamentoMenu()
 
             case '7':
-                console.log("Você saiu do sistema!");
+
                 break;
 
             default:
