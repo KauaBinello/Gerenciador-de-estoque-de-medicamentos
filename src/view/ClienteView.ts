@@ -44,9 +44,7 @@ export class ClienteMenu {
                 let telefone = await this.prompt('Qual o telefone do cliente? ')
                 let nascimento = await this.prompt('Qual a data de nascimento do cliente? ')
                 await this.cliente.inserirCliente(nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, nascimento)
-                console.log('Cliente inserido com sucesso! ')
                 return this.clienteMenu()
-
             case '3':
                 let exibirPorNome = await this.prompt('Qual o nome do cliente que deseja procurar? ')
                 console.log(await this.cliente.exibirID(exibirPorNome))

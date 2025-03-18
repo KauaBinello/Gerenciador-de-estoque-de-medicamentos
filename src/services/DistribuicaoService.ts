@@ -1,9 +1,16 @@
 import { Distribuicao } from "../entity/Distribuicao";
+import { IDistribuicao } from "../interfaces/IDistribuicao";
 import { DistribuicaoRepository } from "../repository/DistribuicaoRepository";
 
-export class DistribuicaoService {
+export class DistribuicaoService implements IDistribuicao{
 
     private repo: DistribuicaoRepository
+    serial: number
+    medicamento_id: number
+    quantidade: number
+    saida: Date
+    usuario_id: number
+    cliente_id: number
 
     constructor() {
         this.repo = new DistribuicaoRepository()

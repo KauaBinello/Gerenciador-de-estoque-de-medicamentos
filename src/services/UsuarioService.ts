@@ -1,8 +1,14 @@
 import { Usuario } from "../entity/Usuario";
+import { IUsuario } from "../interfaces/IUsuario";
 import { UsuarioRepository } from "../repository/UsuarioRepository";
 
-export class UsuarioService {
+export class UsuarioService implements IUsuario {
     private repo: UsuarioRepository
+    id: number
+    nome: string
+    email: string
+    login: string
+    senha: string
 
     constructor() {
         this.repo = new UsuarioRepository()
@@ -34,7 +40,7 @@ export class UsuarioService {
         await this.repo.atualizarUsuario(id, coluna, registro)
     }
 
-    public async deletarUsuario(id: number) {
+    public async deletarUsuario(id: number): Promise<void> {
         await this.repo.deletarUsuario(id)
     }
 
