@@ -15,9 +15,11 @@ export interface ICliente {
 
     listarClientes(): Promise<Cliente[]>;
 
+    verificaCpf(cpf): Promise<Boolean>
+
     inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimento: Date);
 
-    exibirID(nome: string): Promise<number[]>
+    exibirID(cpf: string): Promise<number[]>
 
     buscarInformacoes(id: number): Promise<Cliente[]>
 

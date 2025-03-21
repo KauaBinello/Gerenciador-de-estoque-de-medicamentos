@@ -2,10 +2,12 @@ import { ClienteService } from "../services/ClienteService"
 import promptSync from "prompt-sync"
 
 export class ClienteMenu {
+
     private cliente: ClienteService
     private prompt: promptSync
 
     constructor() {
+
         this.cliente = new ClienteService
         this.prompt = promptSync()
     }
@@ -25,12 +27,15 @@ export class ClienteMenu {
         console.log("6 - Deletar clientes ")
         console.log("7 - Retornar ao menu principal ");
         console.log("");
+
         opcao = await this.prompt("Qual opção deseja? ")
+
         console.log("");
 
         switch (opcao) {
             case '1':
                 console.table(await this.cliente.listarClientes())
+
                 return this.clienteMenu()
 
             case '2':
@@ -40,20 +45,26 @@ export class ClienteMenu {
                 let numero_residencial = await this.prompt('Qual o número residencial do cliente? ')
                 let bairro = await this.prompt('Qual o bairro do cliente? ')
                 let cidade = await this.prompt('Qual a cidade do cliente? ')
-                let uf = await this.prompt('Qual a UF do cliente? ')
+                let uf = (await this.prompt('Qual a UF do cliente? ')).toUpperCase();
                 let telefone = await this.prompt('Qual o telefone do cliente? ')
                 let nascimento = await this.prompt('Qual a data de nascimento do cliente? ')
+
                 await this.cliente.inserirCliente(nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, nascimento)
+
                 return this.clienteMenu()
             case '3':
-                let exibirPorNome = await this.prompt('Qual o nome do cliente que deseja procurar? ')
-                console.log(await this.cliente.exibirID(exibirPorNome))
+                let exibirPorCpf = await this.prompt('Qual o CPF do cliente que deseja procurar? ')
+
+                console.log(await this.cliente.exibirID(exibirPorCpf))
+
                 return this.clienteMenu()
 
             case '4':
                 let procurarPorNome = await this.prompt('Qual o nome do cliente que deseja procurar? ')
                 let procurarPorID = await this.cliente.exibirID(procurarPorNome)
+
                 console.table(await this.cliente.buscarInformacoes(procurarPorID[0]))
+
                 return this.clienteMenu()
 
             case '5':
@@ -61,15 +72,21 @@ export class ClienteMenu {
                 let atualizarPorID = await this.cliente.exibirID(atualizarPorNome)
                 let coluna = await this.prompt("O que deseja atualizar? ")
                 let registro = await this.prompt("Para o que desejar atualizar? ")
+
                 await this.cliente.atualizarCliente(atualizarPorID[0], coluna, registro)
+
                 console.log('Cliente atualizado com sucesso')
+
                 return this.clienteMenu()
 
             case '6':
                 let deletarPorNome = await this.prompt('Qual o nome do cliente que deseja deletar? ')
                 let deletarPorID = await this.cliente.exibirID(deletarPorNome)
+
                 await this.cliente.deletarCliente(deletarPorID[0])
+
                 console.log('Cliente deletado com sucesso! ')
+
                 return this.clienteMenu()
 
             case '7':
@@ -77,6 +94,7 @@ export class ClienteMenu {
 
             default:
                 console.log("Opção inválida! Tente novamente.");
+
                 return this.clienteMenu()
         }
     }

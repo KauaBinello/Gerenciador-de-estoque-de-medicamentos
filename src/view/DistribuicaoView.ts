@@ -28,8 +28,8 @@ export class DistribuicaoMenu {
         console.log("");
         console.log("1 - Listar distribuiçõess ");
         console.log("2 - Distribuir medicamentos ");
-        console.log("3 - Buscar distribuição ");
-        console.log("4 - Buscar distribuições por cliente ");
+        console.log("3 - Buscar distribuição ")
+        console.log("4 - Buscar distribuições por cliente ")
         console.log("5 - Buscar distruibuições por usuário ")
         console.log("6 - Buscar distribuições por medicamento")
         console.log('7 - Buscar distribuições por data')
