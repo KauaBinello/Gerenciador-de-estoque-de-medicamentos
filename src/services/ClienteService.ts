@@ -29,7 +29,7 @@ export class ClienteService implements ICliente {
         return lista.length > 0
     }
 
-    public async inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimento: Date) {
+    public async inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimento: any) {
 
         const ufValida = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"]
 
@@ -70,11 +70,27 @@ export class ClienteService implements ICliente {
             console.log('O telefone deve conter 10 ou 11 dígitos numéricos. ')
             return
         }
-        if (!nascimento) {
-            console.log('A data de nascimento é inválida. ')
-            return
+        let dataNasc: Date;
+        if (typeof nascimento === 'string') {
+
+            const [dia, mes, ano] = nascimento.split('/')
+            dataNasc = new Date(`${ano}-${mes}-${dia}`);
+        } else if (nascimento instanceof Date) {
+            dataNasc = nascimento
+        } else {
+            console.log('A data de nascimento é inválida. ');
+            return;
         }
-        await this.repo.inserirCliente(nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, nascimento)
+        if (isNaN(dataNasc.getTime())) {
+            console.log('A data de nascimento é inválida. ');
+            return;
+        }
+        const dataHoje = new Date();
+        if (dataNasc > dataHoje) {
+            console.log('A data de nascimento não pode ser maior que a data de hoje.');
+            return;
+        }
+        await this.repo.inserirCliente(nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, dataNasc)
         console.log('Cliente inserido com sucesso! ')
     }
 
@@ -96,8 +112,18 @@ export class ClienteService implements ICliente {
     }
 
     public async atualizarCliente(id: number, coluna: string, registro: string): Promise<void> {
+
+        const colunaValida = ['nome', 'cpf', 'endereco', 'numero_resisdencial', 'bairro', 'cidade', 'uf', 'telefone', 'nascimento'];
+
+        if (!colunaValida.includes(coluna)) {
+            console.log("Coluna inválida ou não permitida!");
+            return
+        }
+
         await this.repo.atualizarCliente(id, coluna, registro)
+        console.log('Cliente atualizado com sucesso')
     }
+
 
     public async deletarCliente(id: number): Promise<void> {
         await this.repo.deletarCliente(id)

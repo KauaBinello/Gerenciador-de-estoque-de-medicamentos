@@ -60,28 +60,26 @@ export class ClienteMenu {
                 return this.clienteMenu()
 
             case '4':
-                let procurarPorNome = await this.prompt('Qual o nome do cliente que deseja procurar? ')
-                let procurarPorID = await this.cliente.exibirID(procurarPorNome)
+                let procurarPorCpf = await this.prompt('Qual o cpf do cliente que deseja procurar? ')
+                let procurarPorID = await this.cliente.exibirID(procurarPorCpf)
 
                 console.table(await this.cliente.buscarInformacoes(procurarPorID[0]))
 
                 return this.clienteMenu()
 
             case '5':
-                let atualizarPorNome = await this.prompt('Qual o nome do cliente que deseja atualizar? ')
-                let atualizarPorID = await this.cliente.exibirID(atualizarPorNome)
+                let atualizarPorCpf = await this.prompt('Qual o cpf do cliente que deseja atualizar? ')
+                let atualizarPorID = await this.cliente.exibirID(atualizarPorCpf)
                 let coluna = await this.prompt("O que deseja atualizar? ")
                 let registro = await this.prompt("Para o que desejar atualizar? ")
 
                 await this.cliente.atualizarCliente(atualizarPorID[0], coluna, registro)
 
-                console.log('Cliente atualizado com sucesso')
-
                 return this.clienteMenu()
 
             case '6':
-                let deletarPorNome = await this.prompt('Qual o nome do cliente que deseja deletar? ')
-                let deletarPorID = await this.cliente.exibirID(deletarPorNome)
+                let deletarPorCpf = await this.prompt('Qual o cpf do cliente que deseja deletar? ')
+                let deletarPorID = await this.cliente.exibirID(deletarPorCpf)
 
                 await this.cliente.deletarCliente(deletarPorID[0])
 
