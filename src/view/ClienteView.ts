@@ -69,6 +69,19 @@ export class ClienteMenu {
 
             case '5':
                 let atualizarPorCpf = await this.prompt('Qual o cpf do cliente que deseja atualizar? ')
+
+                console.log(`
+Escolha o campo que deseja atualizar:
+1 - nome
+2 - cpf
+3 - endereco
+4 - numero_residencial
+5 - bairro
+6 - cidade
+7 - uf
+8 - telefone
+9 - nascimento
+`);
                 let atualizarPorID = await this.cliente.exibirID(atualizarPorCpf)
                 let coluna = await this.prompt("O que deseja atualizar? ")
                 let registro = await this.prompt("Para o que desejar atualizar? ")
