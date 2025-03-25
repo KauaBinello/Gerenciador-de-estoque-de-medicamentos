@@ -14,19 +14,21 @@ export class MedicamentoMenu {
 
         let opcao: string
 
-        console.log("");
-        console.log("Menu de medicamentos ");
-        console.log("");
-        console.log("1 - Listar medicamentos ");
-        console.log("2 - Cadastrar medicamentos ");
-        console.log("3 - Buscar ID do medicamento ");
-        console.log("4 - Buscar informações do medicamento ");
-        console.log("5 - Atualizar medicamento ");
-        console.log("6 - Deletar medicamento ")
-        console.log("7 - Retornar ao menu principal ");
-        console.log("");
+        console.log(`
+            
+ Menu de medicamentos
+
+ 1: Listar medicamentos
+ 2: Cadastrar medicamentos
+ 3: Buscar ID do medicamento
+ 4: Buscar informações do medicamento
+ 5: Atualizar medicamento
+ 6: Deletar medicamento
+ 7: Retornar ao menu principal
+
+        `)
+
         opcao = await this.prompt("Qual opção deseja? ")
-        console.log("");
 
         switch (opcao) {
             case '1':

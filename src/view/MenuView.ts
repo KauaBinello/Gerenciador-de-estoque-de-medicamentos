@@ -23,17 +23,18 @@ export class MenuPrincipal {
         let opcao = ''
 
         while (opcao !== '5') {
-            console.log("");
-            console.log("Estoque de medicamentos ");
-            console.log("");
-            console.log("1 - Clientes ");
-            console.log("2 - Medicamentos ");
-            console.log("3 - Usuários ");
-            console.log("4 - Distribuições");
-            console.log("5 - Sair ");
-            console.log("");
+            console.log(`
+ Estoque de medicamentos
+
+ 1: Clientes
+ 2: Medicamentos
+ 3: Usuários
+ 4: Distribuições
+ 5: Sair
+
+            `)
+
             opcao = await this.prompt('Selecione uma opção? ')
-            console.log("");
 
             switch (opcao) {
                 case '1':

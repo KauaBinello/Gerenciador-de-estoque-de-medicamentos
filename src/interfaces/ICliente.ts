@@ -15,15 +15,15 @@ export interface ICliente {
 
     listarClientes(): Promise<Cliente[]>;
 
-    verificaCpf(cpf): Promise<Boolean>
+    verificaCpf(cpf): Promise<Boolean | void | string>
 
     inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimento: Date);
 
     exibirID(cpf: string): Promise<number[]>
 
-    buscarInformacoes(id: number): Promise<Cliente[]>
+    buscarInformacoes(cpf: string)
 
-    atualizarCliente(id: number, coluna: string, registro: string): Promise<void>
+    atualizarCliente(cpf: string, coluna: string, registro: string): Promise<string | void>
 
-    deletarCliente(id: number): Promise<void>
+    deletarCliente(cpf: string): Promise<void>
 }

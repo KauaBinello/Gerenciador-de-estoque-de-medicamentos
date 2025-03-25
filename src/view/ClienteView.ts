@@ -1,3 +1,4 @@
+import { get } from "http"
 import { ClienteService } from "../services/ClienteService"
 import promptSync from "prompt-sync"
 
@@ -16,29 +17,32 @@ export class ClienteMenu {
 
         let opcao: string
 
-        console.log("");
-        console.log("Menu de clientes ");
-        console.log("");
-        console.log("1 - Listar clientes ");
-        console.log("2 - Cadastrar cliente ");
-        console.log("3 - Buscar ID do cliente ");
-        console.log("4 - Buscar informações do cliente ");
-        console.log("5 - Atualizar clientes ");
-        console.log("6 - Deletar clientes ")
-        console.log("7 - Retornar ao menu principal ");
-        console.log("");
+        console.log(`
+ Menu de clientes
+
+ 1: Listar clientes
+ 2: Cadastrar cliente
+ 3: Buscar ID do cliente
+ 4: Buscar informações do cliente
+ 5: Atualizar clientes
+ 6: Deletar clientes
+ 7: Retornar ao menu principal
+`)
 
         opcao = await this.prompt("Qual opção deseja? ")
 
         console.log("");
 
         switch (opcao) {
+
             case '1':
+
                 console.table(await this.cliente.listarClientes())
 
                 return this.clienteMenu()
 
             case '2':
+
                 let nome = await this.prompt('Qual o nome do cliente? ')
                 let cpf = await this.prompt('Qual o cpf do cliente? ')
                 let endereco = await this.prompt('Qual o endereço do cliente? ')
@@ -52,18 +56,20 @@ export class ClienteMenu {
                 await this.cliente.inserirCliente(nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, nascimento)
 
                 return this.clienteMenu()
+
             case '3':
-                let exibirPorCpf = await this.prompt('Qual o CPF do cliente que deseja procurar? ')
+
+                let exibirPorCpf = await this.prompt('Qual o CPF do cliente que deseja o ID? ')
 
                 console.log(await this.cliente.exibirID(exibirPorCpf))
 
                 return this.clienteMenu()
 
             case '4':
-                let procurarPorCpf = await this.prompt('Qual o cpf do cliente que deseja procurar? ')
-                let procurarPorID = await this.cliente.exibirID(procurarPorCpf)
 
-                console.table(await this.cliente.buscarInformacoes(procurarPorID[0]))
+                let procurarPorCpf = await this.prompt('Qual o cpf do cliente que deseja procurar? ')
+
+                await this.cliente.buscarInformacoes(procurarPorCpf)
 
                 return this.clienteMenu()
 
@@ -71,37 +77,33 @@ export class ClienteMenu {
                 let atualizarPorCpf = await this.prompt('Qual o cpf do cliente que deseja atualizar? ')
 
                 console.log(`
-Escolha o campo que deseja atualizar:
-1 - nome
-2 - cpf
-3 - endereco
-4 - numero_residencial
-5 - bairro
-6 - cidade
-7 - uf
-8 - telefone
-9 - nascimento
+
+ Escolha o campo que deseja atualizar:
+
+ 1 - nome
+ 2 - cpf
+ 3 - endereco
+ 4 - numero_residencial
+ 5 - bairro
+ 6 - cidade
+ 7 - uf
+ 8 - telefone
+ 9 - nascimento
 `);
-                let atualizarPorID = await this.cliente.exibirID(atualizarPorCpf)
+
                 let coluna = await this.prompt("O que deseja atualizar? ")
                 let registro = await this.prompt("Para o que desejar atualizar? ")
 
-                await this.cliente.atualizarCliente(atualizarPorID[0], coluna, registro)
+                await this.cliente.atualizarCliente(atualizarPorCpf, coluna, registro)
 
                 return this.clienteMenu()
 
             case '6':
-                let deletarPorCpf = await this.prompt('Qual o cpf do cliente que deseja deletar? ')
-                let deletarPorID = await this.cliente.exibirID(deletarPorCpf)
+                let getCpf = await this.prompt('Qual o cpf do cliente que deseja deletar? ')
 
-                await this.cliente.deletarCliente(deletarPorID[0])
-
-                console.log('Cliente deletado com sucesso! ')
+                await this.cliente.deletarCliente(getCpf)
 
                 return this.clienteMenu()
-
-            case '7':
-                break;
 
             default:
                 console.log("Opção inválida! Tente novamente.");

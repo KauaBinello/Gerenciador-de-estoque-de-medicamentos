@@ -14,21 +14,23 @@ export class UsuarioMenu {
 
         let opcao: string
 
-        console.log("");
-        console.log("Menu de usuário ");
-        console.log("");
-        console.log("Selecione a opção desejada ");
-        console.log("");
-        console.log("1 - Listar usuários ");
-        console.log("2 - Cadastrar usuários ");
-        console.log("3 - Buscar ID do usuário ");
-        console.log("4 - Buscar informações do usuário ");
-        console.log("5 - Atualizar usuário ");
-        console.log("6 - Deletar usuário ")
-        console.log("7 - Retornar ao menu principal ");
-        console.log("");
+        console.log(`
+
+Menu de usuário
+
+Selecione a opção desejada
+
+ 1: Listar usuários
+ 2: Cadastrar usuários
+ 3: Buscar ID do usuário
+ 4: Buscar informações do usuário
+ 5: Atualizar usuário
+ 6: Deletar usuário
+ 7: Retornar ao menu principal
+        
+        `)
+
         opcao = await this.prompt("Qual opção deseja? ")
-        console.log("");
 
         switch (opcao) {
             case '1':

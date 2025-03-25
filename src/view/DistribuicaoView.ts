@@ -23,20 +23,21 @@ export class DistribuicaoMenu {
 
         let opcao: string
 
-        console.log("");
-        console.log("Menu de distruibuição ");
-        console.log("");
-        console.log("1 - Listar distribuiçõess ");
-        console.log("2 - Distribuir medicamentos ");
-        console.log("3 - Buscar distribuição ")
-        console.log("4 - Buscar distribuições por cliente ")
-        console.log("5 - Buscar distruibuições por usuário ")
-        console.log("6 - Buscar distribuições por medicamento")
-        console.log('7 - Buscar distribuições por data')
-        console.log("8 - Retornar ao menu principal ");
-        console.log("");
+        console.log(`
+
+ Menu de distruibuição
+
+ 1: Listar distribuições
+ 2: Distribuir medicamentos
+ 3: Buscar distribuição
+ 4: Buscar distribuições por cliente
+ 5: Buscar distruibuições por usuário
+ 6: Buscar distribuições por medicamento
+ 7: Buscar distribuições por data
+ 8: Retornar ao menu principal
+
+        console.log(`)
         opcao = await this.prompt("Qual opção deseja? ")
-        console.log("");
 
         switch (opcao) {
             case '1':

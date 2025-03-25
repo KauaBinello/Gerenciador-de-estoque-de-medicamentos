@@ -53,9 +53,9 @@ export class ClienteRepository {
         return lista
     }
 
-    public async buscarInformacoes(id: number): Promise<Cliente[]> {
-        let query = 'SELECT * FROM pi.clientes WHERE id = $1'
-        const busca = await this.pool.query(query, [id])
+    public async buscarInformacoes(cpf: string): Promise<Cliente[] | null> {
+        let query = 'SELECT * FROM pi.clientes WHERE cpf = $1'
+        const busca = await this.pool.query(query, [cpf])
 
         const lista: Cliente[] = []
         for (const row of busca.rows) {
@@ -65,14 +65,14 @@ export class ClienteRepository {
         return lista
     }
 
-    public async atualizarCliente(id: number, coluna: string, registro: string): Promise<void> {
-        const query = `UPDATE pi.clientes SET ${coluna} = $1 WHERE id = $2`
-        const result = await this.pool.query(query, [registro, id])
+    public async atualizarCliente(cpf: string, coluna: string, registro: string): Promise<void> {
+        const query = `UPDATE pi.clientes SET ${coluna} = $1 WHERE cpf = $2`;
+        const result = await this.pool.query(query, [registro, cpf]);
     }
-
-    public async deletarCliente(id: number) {
-        let query = 'DELETE FROM pi.clientes WHERE id = $1'
-        const result = await this.pool.query(query, [id])
+    
+    public async deletarCliente(cpf: string) {
+        let query = 'DELETE FROM pi.clientes WHERE cpf = $1'
+        const result = await this.pool.query(query, [cpf])
         return result
     }
 }

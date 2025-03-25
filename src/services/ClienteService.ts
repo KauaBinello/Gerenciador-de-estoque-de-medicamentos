@@ -23,9 +23,19 @@ export class ClienteService implements ICliente {
         return await this.repo.listarClientes()
     }
 
-    public async verificaCpf(cpf): Promise<Boolean> {
+    public async verificaCpf(cpf): Promise<Boolean | void | string> {
+
+        if (!/^\d{11}$/.test(cpf)) {
+            console.log("CPF inválido! Deve conter exatamente 11 dígitos numéricos.");
+            return
+        }
         let lista: Cliente[] = []
         lista = await this.repo.verificaCpf(cpf)
+        if (lista.length < 1) {
+            console.log('O CPF informado não está cadastrado.')
+        } else {
+            console.log('O CPF informado já está cadastrado. ')
+        }
         return lista.length > 0
     }
 
@@ -37,14 +47,9 @@ export class ClienteService implements ICliente {
             console.log('O nome não pode ser deixado vazio. ')
             return
         }
-        if (!/^\d{11}$/.test(cpf)) {
-            console.log('CPF inválido! Deve conter exatamente 11 dígitos numéricos. ')
-            return
-        }
         const cpfExiste = await this.verificaCpf(cpf);
         if (cpfExiste) {
-            console.log('O CPF informado já está cadastrado.');
-            return;
+            return
         }
         if (!endereco.trim()) {
             console.log('O endereço é um campo obrigatório. ')
@@ -95,10 +100,7 @@ export class ClienteService implements ICliente {
     }
 
     public async exibirID(cpf: string): Promise<number[]> {
-        if (!/^\d{11}$/.test(cpf)) {
-            console.log('CPF inválido! Deve conter exatamente 11 dígitos numéricos. ')
-            return await this.repo.exibirID(cpf)
-        }
+
         const clienteExistente = await this.repo.verificaCpf(cpf);
         if (clienteExistente.length === 0) {
             console.log('CPF não encontrado no banco de dados.');
@@ -107,11 +109,25 @@ export class ClienteService implements ICliente {
         return await this.repo.exibirID(cpf)
     }
 
-    public async buscarInformacoes(id: number): Promise<Cliente[]> {
-        return await this.repo.buscarInformacoes(id)
+    public async buscarInformacoes(cpf: string) {
+
+        const cpfExiste = await this.verificaCpf(cpf)
+
+        if (!/^\d{11}$/.test(cpf)) {
+            console.log("CPF inválido! Deve conter exatamente 11 dígitos numéricos.");
+            return
+        }
+
+        if (!cpfExiste) {
+            console.log('O CPF informado não está cadastrado.')
+            return
+        } else {
+            console.table(await this.repo.buscarInformacoes(cpf))
+
+        }
     }
 
-    public async atualizarCliente(id: number, coluna: string, registro: string): Promise<void> {
+    public async atualizarCliente(cpf: string, coluna: string, registro: string): Promise<void> {
 
         const colunaValida = ['nome', 'cpf', 'endereco', 'numero_residencial', 'bairro', 'cidade', 'uf', 'telefone', 'nascimento']
         const ufValida = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"]
@@ -121,97 +137,106 @@ export class ClienteService implements ICliente {
             return
         }
 
-        switch (coluna) {
-            case 'nome':
-                if (!registro.trim()) {
-                    console.log('O nome não pode ser deixado vazio. ')
-                    return
-                }
-                break;
+        const cpfExiste = await this.verificaCpf(cpf);
+        if (!cpfExiste) {
+            return;
+        } else {
 
-            case 'cpf':
-                if (!/^\d{11}$/.test(registro)) {
-                    console.log("CPF inválido! Deve conter exatamente 11 dígitos numéricos.");
-                    return;
-                }
-                const cpfExiste = await this.verificaCpf(registro);
-                if (cpfExiste) {
-                    console.log("O CPF informado já está cadastrado.");
-                    return;
-                }
-                break;
+            switch (coluna) {
+                case 'nome':
+                    if (!registro.trim()) {
+                        console.log('O nome não pode ser deixado vazio. ')
+                        return
+                    }
+                    break;
 
-            case 'endereco':
-                if (!registro.trim()) {
-                    console.log('O endereço é um campo obrigatório. ')
-                    return
-                }
-                break;
+                case 'cpf':
+                    const cpfExiste = await this.verificaCpf(registro);
+                    if (cpfExiste) {
+                        return;
+                    }
+                    break;
 
-            case 'numero_resisdencial':
-                if (!registro.trim()) {
-                    console.log('O número residencial não pode ser deixado vazio. ')
-                    return
-                }
-                break;
+                case 'endereco':
+                    if (!registro.trim()) {
+                        console.log('O endereço é um campo obrigatório. ')
+                        return
+                    }
+                    break;
 
-            case 'bairro':
-                if (!registro.trim()) {
-                    console.log('O bairro é um campo obrigatório.')
-                    return
-                }
-                break;
+                case 'numero_resisdencial':
+                    if (!registro.trim()) {
+                        console.log('O número residencial não pode ser deixado vazio. ')
+                        return
+                    }
+                    break;
 
-            case 'cidade':
-                if (!registro.trim()) {
-                    console.log('A cidade inválida! Deve conter pelo menos 3 caracteres! ')
-                    return
-                }
-                break;
+                case 'bairro':
+                    if (!registro.trim()) {
+                        console.log('O bairro é um campo obrigatório.')
+                        return
+                    }
+                    break;
 
-            case 'uf':
-                if (registro.length !== 2 || !ufValida.includes(registro.toUpperCase())) {
-                    console.log("A sigla do estado (UF) deve ser válida e conter 2 caracteres.");
-                    return;
-                }
-                break;
+                case 'cidade':
+                    if (!registro.trim()) {
+                        console.log('A cidade inválida! Deve conter pelo menos 3 caracteres! ')
+                        return
+                    }
+                    break;
 
-            case 'telefone':
-                if (!/^\d{10,11}$/.test(registro)) {
-                    console.log('O telefone deve conter 10 ou 11 dígitos numéricos. ')
-                    return
-                }
-                break;
+                case 'uf':
+                    if (registro.length !== 2 || !ufValida.includes(registro.toUpperCase())) {
+                        console.log("A sigla do estado (UF) deve ser válida e conter 2 caracteres.");
+                        return;
+                    }
+                    break;
 
-            case 'nascimento':
-                let dataNasc: Date;
-                if (typeof registro === 'string') {
-                    const [dia, mes, ano] = registro.split('/');
+                case 'telefone':
+                    if (!/^\d{10,11}$/.test(registro)) {
+                        console.log('O telefone deve conter 10 ou 11 dígitos numéricos. ')
+                        return
+                    }
+                    break;
 
-                    dataNasc = new Date(`${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`);
-                } else if (Object.prototype.toString.call(registro) === '[object Date]') {
-                    dataNasc = registro;
-                } else {
-                    console.log('A data de nascimento é inválida.');
-                    return;
-                }
+                case 'nascimento':
+                    let dataNasc: Date;
+                    if (typeof registro === 'string') {
+                        const [dia, mes, ano] = registro.split('/');
 
-                if (isNaN(dataNasc.getTime())) {
-                    console.log('A data de nascimento é inválida.');
-                    return;
-                }
+                        dataNasc = new Date(`${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`);
+                    } else if (Object.prototype.toString.call(registro) === '[object Date]') {
+                        dataNasc = registro;
+                    } else {
+                        console.log('A data de nascimento é inválida.');
+                        return;
+                    }
 
-                const dataHoje = new Date();
-                if (dataNasc > dataHoje) {
-                    console.log('A data de nascimento não pode ser maior que a data de hoje.');
-                    return;
-                }
-                await this.repo.atualizarCliente(id, coluna, registro);
-                console.log('Cliente atualizado com sucesso');
+                    if (isNaN(dataNasc.getTime())) {
+                        console.log('A data de nascimento é inválida.');
+                        return;
+                    }
+
+                    const dataHoje = new Date();
+                    if (dataNasc > dataHoje) {
+                        console.log('A data de nascimento não pode ser maior que a data de hoje.');
+                        return;
+                    }
+            }
         }
+        await this.repo.atualizarCliente(cpf, coluna, registro);
+        console.log('Cliente atualizado com sucesso');
     }
 
-    public async deletarCliente(id: number): Promise<void> {
-        await this.repo.deletarCliente(id)
+    public async deletarCliente(cpf: string): Promise<void> {
+
+        const cpfExiste = await this.verificaCpf(cpf)
+
+        if (!cpfExiste) {
+            return
+        } else {
+            await this.repo.deletarCliente(cpf)
+            console.log('Cliente deletado com sucesso! ')
+        }
     }
 }
