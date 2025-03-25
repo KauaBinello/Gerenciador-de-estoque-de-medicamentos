@@ -38,7 +38,7 @@ export class MedicamentoMenu {
             case '2':
                 let nome = await this.prompt('Qual o nome do medicamento? ')
                 let embalagem = await this.prompt('Qual as informações de embalagem do medicamento? ')
-                let saldo = await this.prompt('Qual o saldo do medicamento? ')
+                let saldo = parseInt(await this.prompt('Qual o saldo do medicamento? '))
                 let validade = await this.prompt('Qual a data de validade do medicamento? ')
                 await this.medicamento.inserirMedicamento(nome, embalagem, saldo, validade)
                 console.log('Medicamento inserido com sucesso! ')
