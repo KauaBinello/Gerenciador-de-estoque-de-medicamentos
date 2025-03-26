@@ -27,7 +27,7 @@ export class MedicamentoService implements IMedicamento {
         if (lista.length < 1) {
             console.log('O medicamento informado não está cadastrado.')
         } else {
-            console.log('O medicamento informado já está cadastrado. ')
+            console.log('Aqui está o ID do medicamento: ')
         }
         return lista.length > 0
     }
@@ -59,7 +59,7 @@ export class MedicamentoService implements IMedicamento {
             return;
         }
         if (isNaN(dataVal.getTime())) {
-            console.log('A data de validadae é inválida. ');
+            console.log('A data de validade é inválida. ');
             return;
         }
         const hoje = new Date();
@@ -78,10 +78,9 @@ export class MedicamentoService implements IMedicamento {
             console.log('Informe o nome do medicamento. ')
             return
         }
-        let MedExiste = await this.repo.verificaRetorno(nome)
-        if (MedExiste.length === 0) {
-            console.log('Medicamento não encontrado no banco de dados.');
-            return []
+        let MedExiste = await this.verificaRetorno(nome)
+        if (!MedExiste) {
+            return
         }
         return await this.repo.exibirID(nome)
     }

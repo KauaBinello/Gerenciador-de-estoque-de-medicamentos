@@ -19,8 +19,6 @@ export interface ICliente {
 
     inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimento: Date);
 
-    exibirID(cpf: string): Promise<number[]>
-
     buscarInformacoes(cpf: string)
 
     atualizarCliente(cpf: string, coluna: string, registro: string): Promise<string | void>

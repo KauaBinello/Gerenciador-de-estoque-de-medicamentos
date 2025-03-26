@@ -99,31 +99,14 @@ export class ClienteService implements ICliente {
         console.log('Cliente inserido com sucesso! ')
     }
 
-    public async exibirID(cpf: string): Promise<number[]> {
-
-        const clienteExistente = await this.repo.verificaCpf(cpf);
-        if (clienteExistente.length === 0) {
-            console.log('CPF não encontrado no banco de dados.');
-            return []
-        }
-        return await this.repo.exibirID(cpf)
-    }
-
     public async buscarInformacoes(cpf: string) {
 
         const cpfExiste = await this.verificaCpf(cpf)
 
-        if (!/^\d{11}$/.test(cpf)) {
-            console.log("CPF inválido! Deve conter exatamente 11 dígitos numéricos.");
-            return
-        }
-
         if (!cpfExiste) {
-            console.log('O CPF informado não está cadastrado.')
             return
         } else {
             console.table(await this.repo.buscarInformacoes(cpf))
-
         }
     }
 

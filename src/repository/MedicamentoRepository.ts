@@ -24,6 +24,18 @@ export class MedicamentoRepository {
         return listaMedicamento
     }
 
+    public async verificaRetorno(nome) {
+        let query = 'SELECT * FROM pi.medicamentos WHERE nome = $1'
+        const busca = await this.pool.query(query, [nome])
+
+        const lista: Medicamento[] = []
+        for (const row of busca.rows) {
+            const medicamento = new Medicamento(row.id, row.nome, row.embalagem, row.saldo, row.validade)
+            lista.push(medicamento)
+        }
+        return lista
+    }
+
     public async inserirMedicamento(nome: string, embalagem: string, saldo: number, validade: Date) {
         let query = 'INSERT INTO pi.medicamentos (nome, embalagem, saldo, validade) VALUES ($1, $2, $3, $4)'
         await this.pool.query(query, [nome, embalagem, saldo, validade])

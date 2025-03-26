@@ -22,11 +22,10 @@ export class ClienteMenu {
 
  1: Listar clientes
  2: Cadastrar cliente
- 3: Buscar ID do cliente
- 4: Buscar informações do cliente
- 5: Atualizar clientes
- 6: Deletar clientes
- 7: Retornar ao menu principal
+ 3: Buscar informações do cliente
+ 4: Atualizar clientes
+ 5: Deletar clientes
+ 6: Retornar ao menu principal
 `)
 
         opcao = await this.prompt("Qual opção deseja? ")
@@ -57,23 +56,16 @@ export class ClienteMenu {
 
                 return this.clienteMenu()
 
+
             case '3':
 
-                let exibirPorCpf = await this.prompt('Qual o CPF do cliente que deseja o ID? ')
-
-                console.log(await this.cliente.exibirID(exibirPorCpf))
-
-                return this.clienteMenu()
-
-            case '4':
-
-                let procurarPorCpf = await this.prompt('Qual o cpf do cliente que deseja procurar? ')
+                let procurarPorCpf = await this.prompt('Qual o cpf do cliente que deseja buscar? ')
 
                 await this.cliente.buscarInformacoes(procurarPorCpf)
 
                 return this.clienteMenu()
 
-            case '5':
+            case '4':
                 let atualizarPorCpf = await this.prompt('Qual o cpf do cliente que deseja atualizar? ')
 
                 console.log(`
@@ -98,13 +90,15 @@ export class ClienteMenu {
 
                 return this.clienteMenu()
 
-            case '6':
+            case '5':
                 let getCpf = await this.prompt('Qual o cpf do cliente que deseja deletar? ')
 
                 await this.cliente.deletarCliente(getCpf)
 
                 return this.clienteMenu()
 
+            case '6':
+                this.
             default:
                 console.log("Opção inválida! Tente novamente.");
 

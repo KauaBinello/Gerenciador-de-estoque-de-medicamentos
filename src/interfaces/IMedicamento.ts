@@ -12,7 +12,7 @@ export interface IMedicamento {
 
     inserirMedicamento(nome: string, embalagem: string, saldo: number, validade: Date)
 
-    exibirID(nome: string): Promise<number[]>
+    exibirID(nome: string): Promise<number[] | void>
 
     buscarInformacoes(id: number): Promise<Medicamento[]>
 
