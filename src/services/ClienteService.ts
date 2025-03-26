@@ -23,31 +23,27 @@ export class ClienteService implements ICliente {
         return await this.repo.listarClientes()
     }
 
-    public async verificaCpf(cpf): Promise<Boolean | void | string> {
+    public async verificaCpf(cpf): Promise<boolean> {
 
         if (!/^\d{11}$/.test(cpf)) {
-            console.log("CPF inválido! Deve conter exatamente 11 dígitos numéricos.");
-            return
-        } else {
-            let lista: Cliente[] = []
-            lista = await this.repo.verificaCpf(cpf)
-
-            return lista.length > 0
+            throw new Error("CPF inválido! Deve conter exatamente 11 dígitos numéricos.");
         }
+
+        const lista: Cliente[] = await this.repo.verificaCpf(cpf);
+        return lista.length > 0;
     }
 
     public async inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimentoStr: string) {
 
         const ufValida = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"]
-    
+
         if (!nome.trim()) {
             console.log('Informe o nome do cliente. ')
             return
         }
         const cpfExiste = await this.verificaCpf(cpf);
         if (cpfExiste) {
-            console.log('O CPF informado já está cadastrado. ')
-            return
+            throw new Error('O CPF informado já está cadastrado.');
         }
         if (!endereco.trim()) {
             console.log('Informe o endereço do cliente. ')
@@ -77,14 +73,14 @@ export class ClienteService implements ICliente {
             console.log('Data de nascimento inválida. Use o formato YYYY/MM/DD.');
             return;
         }
-    
+
         const nascimento = new Date(nascimentoStr.replace(/\//g, '-'))
-    
+
         if (isNaN(nascimento.getTime())) {
             console.log('Data de nascimento inválida. Certifique-se de que a data inserida é válida.');
             return;
         }
-    
+
         const hoje = new Date();
         if (nascimento > hoje) {
             console.log('A data de nascimento não pode ser maior que a data de hoje.');
@@ -94,7 +90,7 @@ export class ClienteService implements ICliente {
         await this.repo.inserirCliente(nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, nascimento);
         console.log('Cliente inserido com sucesso! ');
     }
-    
+
 
     public async buscarInformacoes(cpf: string) {
 
