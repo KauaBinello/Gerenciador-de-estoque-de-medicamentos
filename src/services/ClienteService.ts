@@ -28,82 +28,80 @@ export class ClienteService implements ICliente {
         if (!/^\d{11}$/.test(cpf)) {
             console.log("CPF inválido! Deve conter exatamente 11 dígitos numéricos.");
             return
-        }
-        let lista: Cliente[] = []
-        lista = await this.repo.verificaCpf(cpf)
-        if (lista.length < 1) {
-            console.log('O CPF informado não está cadastrado.')
         } else {
-            console.log('O CPF informado já está cadastrado. ')
+            let lista: Cliente[] = []
+            lista = await this.repo.verificaCpf(cpf)
+
+            return lista.length > 0
         }
-        return lista.length > 0
     }
 
-    public async inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimento: any) {
+    public async inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimentoStr: string) {
 
         const ufValida = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"]
-
+    
         if (!nome.trim()) {
-            console.log('O nome não pode ser deixado vazio. ')
+            console.log('Informe o nome do cliente. ')
             return
         }
         const cpfExiste = await this.verificaCpf(cpf);
         if (cpfExiste) {
+            console.log('O CPF informado já está cadastrado. ')
             return
         }
         if (!endereco.trim()) {
-            console.log('O endereço é um campo obrigatório. ')
+            console.log('Informe o endereço do cliente. ')
             return
         }
         if (!numero_residencial.trim()) {
-            console.log('O número residencial não pode ser deixado vazio. ')
+            console.log('Informe o número residencial do cliente. ')
             return
         }
         if (!bairro.trim()) {
-            console.log('O bairro é um campo obrigatório.')
+            console.log('Informe o bairro do cliente. ')
             return
         }
         if (!cidade.trim()) {
-            console.log('A cidade inválida! Deve conter pelo menos 3 caracteres! ')
+            console.log('Informe a cidade do cliente. ')
             return
         }
         if (uf.length !== 2 || !ufValida.includes(uf.toUpperCase())) {
-            console.log("A sigla do estado (UF) deve ser válida e conter 2 caracteres.");
+            console.log("A sigla do estado (UF) deve ser informada e conter 2 caracteres.");
             return;
         }
         if (!/^\d{10,11}$/.test(telefone)) {
-            console.log('O telefone deve conter 10 ou 11 dígitos numéricos. ')
+            console.log('O telefone deve ser informado e conter 10 ou 11 dígitos numéricos. ')
             return
         }
-        let dataNasc: Date;
-        if (typeof nascimento === 'string') {
-
-            const [dia, mes, ano] = nascimento.split('/')
-            dataNasc = new Date(`${ano}-${mes}-${dia}`);
-        } else if (nascimento instanceof Date) {
-            dataNasc = nascimento
-        } else {
-            console.log('A data de nascimento é inválida. ');
+        if (!/^\d{4}\/\d{2}\/\d{2}$/.test(nascimentoStr)) {
+            console.log('Data de nascimento inválida. Use o formato YYYY/MM/DD.');
             return;
         }
-        if (isNaN(dataNasc.getTime())) {
-            console.log('A data de nascimento é inválida. ');
+    
+        const nascimento = new Date(nascimentoStr.replace(/\//g, '-'))
+    
+        if (isNaN(nascimento.getTime())) {
+            console.log('Data de nascimento inválida. Certifique-se de que a data inserida é válida.');
             return;
         }
-        const dataHoje = new Date();
-        if (dataNasc > dataHoje) {
+    
+        const hoje = new Date();
+        if (nascimento > hoje) {
             console.log('A data de nascimento não pode ser maior que a data de hoje.');
             return;
         }
-        await this.repo.inserirCliente(nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, dataNasc)
-        console.log('Cliente inserido com sucesso! ')
+
+        await this.repo.inserirCliente(nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, nascimento);
+        console.log('Cliente inserido com sucesso! ');
     }
+    
 
     public async buscarInformacoes(cpf: string) {
 
         const cpfExiste = await this.verificaCpf(cpf)
 
         if (!cpfExiste) {
+            console.log(`O CPF informado não está cadastrado.`)
             return
         } else {
             console.table(await this.repo.buscarInformacoes(cpf))

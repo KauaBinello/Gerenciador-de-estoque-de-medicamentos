@@ -18,7 +18,7 @@ export class ClienteRepository {
         
         const listaClientes: Cliente[] = []
         
-        for (const row of result.rows) {console.log(row)
+        for (const row of result.rows) {
             const cliente = new Cliente(row.id, row.nome, row.cpf, row.endereco, row.numero_residencial, row.bairro, row.cidade, row.uf, row.telefone, row.nascimento)
             listaClientes.push(cliente)
         }
