@@ -177,25 +177,20 @@ export class ClienteService implements ICliente {
                     break;
 
                 case 'nascimento':
-                    let dataNasc: Date;
-                    if (typeof registro === 'string') {
-                        const [dia, mes, ano] = registro.split('/');
-
-                        dataNasc = new Date(`${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`);
-                    } else if (Object.prototype.toString.call(registro) === '[object Date]') {
-                        dataNasc = registro;
-                    } else {
-                        console.log('A data de nascimento é inválida.');
+                    if (!/^\d{4}\/\d{2}\/\d{2}$/.test(registro)) {
+                        console.log('Data de nascimento inválida. Use o formato YYYY/MM/DD.');
                         return;
                     }
-
-                    if (isNaN(dataNasc.getTime())) {
-                        console.log('A data de nascimento é inválida.');
+            
+                    const nascimento = new Date(registro.replace(/\//g, '-'))
+            
+                    if (isNaN(nascimento.getTime())) {
+                        console.log('Data de nascimento inválida. Certifique-se de que a data inserida é válida.');
                         return;
                     }
-
-                    const dataHoje = new Date();
-                    if (dataNasc > dataHoje) {
+            
+                    const hoje = new Date();
+                    if (nascimento > hoje) {
                         console.log('A data de nascimento não pode ser maior que a data de hoje.');
                         return;
                     }

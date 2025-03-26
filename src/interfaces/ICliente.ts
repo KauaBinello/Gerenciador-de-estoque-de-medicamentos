@@ -17,7 +17,7 @@ export interface ICliente {
 
     verificaCpf(cpf): Promise<Boolean | void | string>
 
-    inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimento: Date);
+    inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimento: string);
 
     buscarInformacoes(cpf: string)
 
