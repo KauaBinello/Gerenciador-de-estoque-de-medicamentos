@@ -1,6 +1,6 @@
-import { get } from "http"
 import { ClienteService } from "../services/ClienteService"
 import promptSync from "prompt-sync"
+
 
 export class ClienteMenu {
 
@@ -70,7 +70,7 @@ export class ClienteMenu {
 
                 console.log(`
 
- Escolha o campo que deseja atualizar, (escreva exatamente como está abaixo! ) :
+ Escolha o campo que deseja atualizar (escreva exatamente como está abaixo! ) :
 
  nome
  cpf
@@ -96,6 +96,9 @@ export class ClienteMenu {
                 await this.cliente.deletarCliente(getCpf)
 
                 return this.clienteMenu()
+            
+            case '6':
+               return
 
             default:
                 console.log("Opção inválida! Tente novamente.");

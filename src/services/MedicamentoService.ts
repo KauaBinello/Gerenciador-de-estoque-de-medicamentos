@@ -20,26 +20,19 @@ export class MedicamentoService implements IMedicamento {
         return await this.repo.listarMedicamentos()
     }
 
-    public async verificaRetorno(nome): Promise<Boolean | void | string> {
+    public async verificaRetorno(nome): Promise<Boolean> {
 
-        let lista: Medicamento[] = []
-        lista = await this.repo.verificaRetorno(nome)
-        if (lista.length < 1) {
-            console.log('O medicamento informado não está cadastrado.')
-        } else {
-            console.log('Aqui está o ID do medicamento: ')
-        }
+        let lista: Medicamento[] = await this.repo.verificaRetorno(nome)
         return lista.length > 0
     }
 
-    public async inserirMedicamento(nome: string, embalagem: string, saldo: number, validade: any) {
-
-        let dataVal: Date;
+    public async inserirMedicamento(nome: string, embalagem: string, saldo: number, validadeStr: string) {
 
         if (!nome.trim()) {
             console.log('Informe o nome do medicamento. ')
             return
         }
+
         if (!embalagem.trim()) {
             console.log('As informações sobre a embalagem não podem ser deixadas vazias. ')
             return
@@ -48,52 +41,131 @@ export class MedicamentoService implements IMedicamento {
             console.log('O saldo não pode estar vazio e/ou deve ser um número válido.');
             return;
         }
-        if (typeof validade === 'string') {
 
-            const [dia, mes, ano] = validade.split('/')
-            dataVal = new Date(`${ano}-${mes}-${dia}`);
-        } else if (validade instanceof Date) {
-            dataVal = validade
-        } else {
-            console.log('A data de validade é inválida. ');
+        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(validadeStr)) {
+            console.log('Data de nascimento inválida. Use o formato DD/MM/AAAA.');
             return;
         }
-        if (isNaN(dataVal.getTime())) {
-            console.log('A data de validade é inválida. ');
+
+        const [dia, mes, ano] = validadeStr.split('/');
+        const validadeFormatado = `${ano}-${mes}-${dia}`;
+
+        const validade = new Date(validadeFormatado);
+
+        if (isNaN(validade.getTime())) {
+            console.log('Data de validade inválida. Certifique-se de que a data inserida é válida.');
             return;
         }
         const hoje = new Date();
         const doisMesesDepois = new Date(hoje.getFullYear(), hoje.getMonth() + 2, hoje.getDate());
 
-        if (dataVal < doisMesesDepois) {
+        if (validade < doisMesesDepois) {
             console.log('O medicamento deve ter pelo menos 2 meses antes do vencimento.');
             return;
         }
-        await this.repo.inserirMedicamento(nome, embalagem, saldo, dataVal)
+        await this.repo.inserirMedicamento(nome, embalagem, saldo, validade)
+        console.log('Medicamento inserido com sucesso! ')
     }
 
-    public async exibirID(nome: string): Promise<number[] | void> {
+    public async buscarInformacoes(nome: string) {
 
         if (!nome.trim()) {
             console.log('Informe o nome do medicamento. ')
             return
         }
-        let MedExiste = await this.verificaRetorno(nome)
-        if (!MedExiste) {
+
+        const nomeExiste = await this.verificaRetorno(nome)
+
+        if (!nomeExiste) {
+            console.log(`O medicamento informado não está cadastrado.`)
+            return
+        } else {
+            console.table(await this.repo.buscarInformacoes(nome))
+        }
+    }
+
+    public async atualizarMedicamento(nome: string, coluna: string, registro: any): Promise<void> {
+
+        const colunaValida = ['nome', 'embalagem', 'saldo', 'validade']
+
+        const nomeExiste = await this.verificaRetorno(nome)
+
+        if (!nomeExiste) {
+            console.log(`O medicamento informado não está cadastrado.`)
+            return
+        } else {
+
+            if (!colunaValida.includes(coluna)) {
+                console.log("Coluna inválida ou não permitida!");
+                return
+            } else
+                switch (coluna) {
+                    case 'nome':
+                        if (!registro.trim()) {
+                            console.log('Informe o nome do medicamento. ')
+                            return
+                        }
+                        break
+
+                    case 'embalagem':
+                        if (!registro.trim()) {
+                            console.log('As informações sobre a embalagem não podem ser deixadas vazias. ')
+                            return
+                        }
+                        break
+
+                    case 'saldo':
+
+                        const saldoConvertido = Number(registro)
+                        if (typeof saldoConvertido !== "number" || isNaN(saldoConvertido)) {
+                            console.log('O saldo não pode estar vazio e/ou deve ser um número válido.');
+                            return;
+                        }
+                        break
+
+                    case 'validade':
+                        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(registro)) {
+                            console.log('Data de nascimento inválida. Use o formato DD/MM/AAAA.');
+                            return;
+                        }
+
+                        const [dia, mes, ano] = registro.split('/');
+                        const validadeFormatado = `${ano}-${mes}-${dia}`;
+
+                        const validade = new Date(validadeFormatado);
+
+                        if (isNaN(validade.getTime())) {
+                            console.log('Data de validade inválida. Certifique-se de que a data inserida é válida.');
+                            return;
+                        }
+                        const hoje = new Date();
+                        const doisMesesDepois = new Date(hoje.getFullYear(), hoje.getMonth() + 2, hoje.getDate());
+
+                        if (validade < doisMesesDepois) {
+                            console.log('O medicamento deve ter pelo menos 2 meses antes do vencimento.');
+                            return;
+                        }
+                        break
+                }
+        }
+        await this.repo.atualizarMedicamento(nome, coluna, registro)
+        console.log('Medicamento atualizado com sucesso')
+    }
+
+    public async deletarMedicamento(nome: string): Promise<void> {
+
+        if (!nome.trim()) {
+            console.log('O nome não pode ser deixado vazio. ')
             return
         }
-        return await this.repo.exibirID(nome)
-    }
 
-    public async buscarInformacoes(id: number): Promise<Medicamento[]> {
-        return await this.repo.buscarInformacoes(id)
-    }
+        const nomeExiste = await this.verificaRetorno(nome)
 
-    public async atualizarMedicamento(id: number, coluna: string, registro: string): Promise<void> {
-        await this.repo.atualizarMedicamento(id, coluna, registro)
-    }
-
-    public async deletarMedicamento(id: number): Promise<void> {
-        await this.repo.deletarMedicamento(id)
+        if (!nomeExiste) {
+            console.log(`O medicamento informado não está cadastrado.`);
+        } else {
+            await this.repo.deletarMedicamento(nome);
+            console.log('Medicamento deletado com sucesso!')
+        }
     }
 }

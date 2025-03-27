@@ -25,7 +25,7 @@ export class ClienteRepository {
         return listaClientes
     }
 
-    public async verificaCpf(cpf) {
+    public async verificaCpf(cpf: string) {
         let query = 'SELECT * FROM pi.clientes WHERE cpf = $1'
         const busca = await this.pool.query(query, [cpf])
 

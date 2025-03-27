@@ -100,7 +100,7 @@ export class DistribuicaoMenu {
 
                 return this.distribuicaoMenu()
             case '8':
-                break;
+                return
 
             default:
                 console.log("Opção inválida! Tente novamente.");

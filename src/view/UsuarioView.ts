@@ -74,7 +74,7 @@ Selecione a opção desejada
                 return this.usuarioMenu()
 
             case '7':
-                break;
+                return
 
             default:
                 console.log("Opção inválida! Tente novamente.");

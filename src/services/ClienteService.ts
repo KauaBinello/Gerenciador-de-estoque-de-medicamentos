@@ -23,14 +23,10 @@ export class ClienteService implements ICliente {
         return await this.repo.listarClientes()
     }
 
-    public async verificaCpf(cpf): Promise<boolean> {
-
-        if (!/^\d{11}$/.test(cpf)) {
-            throw new Error("CPF inválido! Deve conter exatamente 11 dígitos numéricos.");
-        }
+    public async verificaCpf(cpf: string): Promise<boolean> {
 
         const lista: Cliente[] = await this.repo.verificaCpf(cpf);
-        return lista.length > 0;
+        return lista.length > 0
     }
 
     public async inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimentoStr: string) {
@@ -41,9 +37,14 @@ export class ClienteService implements ICliente {
             console.log('Informe o nome do cliente. ')
             return
         }
+        if (!/^\d{11}$/.test(cpf)) {
+            console.log("CPF inválido! Deve conter exatamente 11 dígitos numéricos.")
+            return
+        }
         const cpfExiste = await this.verificaCpf(cpf);
         if (cpfExiste) {
-            throw new Error('O CPF informado já está cadastrado.');
+            console.log('O CPF informado já está cadastrado.');
+            return
         }
         if (!endereco.trim()) {
             console.log('Informe o endereço do cliente. ')
@@ -93,6 +94,11 @@ export class ClienteService implements ICliente {
 
     public async buscarInformacoes(cpf: string) {
 
+        if (!/^\d{11}$/.test(cpf)) {
+            console.log("CPF inválido! Deve conter exatamente 11 dígitos numéricos.")
+            return
+        }
+
         const cpfExiste = await this.verificaCpf(cpf)
 
         if (!cpfExiste) {
@@ -129,6 +135,11 @@ export class ClienteService implements ICliente {
                     break;
 
                 case 'cpf':
+
+                    if (!/^\d{11}$/.test(cpf)) {
+                        console.log("CPF inválido! Deve conter exatamente 11 dígitos numéricos.")
+                        return
+                    }
                     const cpfExiste = await this.verificaCpf(registro);
                     if (cpfExiste) {
                         throw new Error('O CPF informado já está cadastrado.')
@@ -205,6 +216,11 @@ export class ClienteService implements ICliente {
     }
 
     public async deletarCliente(cpf: string): Promise<void> {
+
+        if (!/^\d{11}$/.test(cpf)) {
+            console.log("CPF inválido! Deve conter exatamente 11 dígitos numéricos.")
+            return
+        }
 
         const cpfExiste = await this.verificaCpf(cpf)
 

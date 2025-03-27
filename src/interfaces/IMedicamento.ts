@@ -10,14 +10,14 @@ export interface IMedicamento {
 
     listarMedicamentos(): Promise<Medicamento[]>
 
-    inserirMedicamento(nome: string, embalagem: string, saldo: number, validade: Date)
+    verificaRetorno(nome): Promise<Boolean>
 
-    exibirID(nome: string): Promise<number[] | void>
+    inserirMedicamento(nome: string, embalagem: string, saldo: number, validade: string)
 
-    buscarInformacoes(id: number): Promise<Medicamento[]>
+    buscarInformacoes(nome: string)
 
-    atualizarMedicamento(id: number, coluna: string, registro: string): Promise<void>
+    atualizarMedicamento(nome: string, coluna: string, registro: string): Promise<void>
 
-    deletarMedicamento(id: number): Promise<void>
+    deletarMedicamento(nome: string): Promise<void>
 
 }

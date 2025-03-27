@@ -20,11 +20,10 @@ export class MedicamentoMenu {
 
  1: Listar medicamentos
  2: Cadastrar medicamentos
- 3: Buscar ID do medicamento
- 4: Buscar informações do medicamento
- 5: Atualizar medicamento
- 6: Deletar medicamento
- 7: Retornar ao menu principal
+ 3: Buscar informações do medicamento
+ 4: Atualizar medicamento
+ 5: Deletar medicamento
+ 6: Retornar ao menu principal
 
         `)
 
@@ -32,51 +31,64 @@ export class MedicamentoMenu {
 
         switch (opcao) {
             case '1':
+
                 console.table(await this.medicamento.listarMedicamentos())
+
                 return this.medicamentoMenu()
 
             case '2':
+
                 let nome = await this.prompt('Qual o nome do medicamento? ')
                 let embalagem = await this.prompt('Qual as informações de embalagem do medicamento? ')
                 let saldo = parseInt(await this.prompt('Qual o saldo do medicamento? '))
                 let validade = await this.prompt('Qual a data de validade do medicamento? ')
                 await this.medicamento.inserirMedicamento(nome, embalagem, saldo, validade)
-                console.log('Medicamento inserido com sucesso! ')
+
                 return this.medicamentoMenu()
 
             case '3':
-                let exibirPorNome = await this.prompt('Qual o nome do medicamento que deseja procurar? ')
-                console.log(await this.medicamento.exibirID(exibirPorNome))
+
+                let procurarPorNome = await this.prompt('Qual o nome do medicamento que deseja procurar? ')
+
+                await this.medicamento.buscarInformacoes(procurarPorNome)
+
                 return this.medicamentoMenu()
 
             case '4':
-                let procurarPorNome = await this.prompt('Qual o nome do medicamento que deseja procurar? ')
-                let procurarPorID = await this.medicamento.exibirID(procurarPorNome)
-                console.table(await this.medicamento.buscarInformacoes(procurarPorID[0]))
+
+                let atualizarPorNome = await this.prompt('Qual o nome do medicamento que deseja atualizar? ')
+
+                console.log(`
+
+ Escolha o campo que deseja atualizar (escreva exatamente como está abaixo! ) :
+
+ nome
+ embalagem
+ saldo
+ validade
+`);
+
+                let coluna = await this.prompt("O que deseja atualizar? ")
+                let registro = await this.prompt("Para o que desejar atualizar? ")
+
+                await this.medicamento.atualizarMedicamento(atualizarPorNome, coluna, registro)
+
                 return this.medicamentoMenu()
 
             case '5':
-                let atualizarPorNome = await this.prompt('Qual o nome do medicamento que deseja atualizar? ')
-                let atualizarPorID = await this.medicamento.exibirID(atualizarPorNome)
-                let coluna = await this.prompt("O que deseja atualizar? ")
-                let registro = await this.prompt("Para o que desejar atualizar? ")
-                await this.medicamento.atualizarMedicamento(atualizarPorID[0], coluna, registro)
-                console.log('Medicamento atualizado com sucesso')
-                return this.medicamentoMenu()
 
-            case '6':
                 let deletarPorNome = await this.prompt('Qual o nome do medicamento que deseja deletar? ')
-                let deletarPorID = await this.medicamento.exibirID(deletarPorNome)
-                await this.medicamento.deletarMedicamento(deletarPorID[0])
-                console.log('Medicamento deletado com sucesso! ')
+
+                await this.medicamento.deletarMedicamento(deletarPorNome)
+
                 return this.medicamentoMenu()
 
-            case '7':
-
-                break;
-
+                case '6':
+                    return
             default:
+
                 console.log("Opção inválida! Tente novamente.");
+
                 return this.medicamentoMenu()
         }
     }
