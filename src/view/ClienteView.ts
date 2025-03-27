@@ -70,17 +70,17 @@ export class ClienteMenu {
 
                 console.log(`
 
- Escolha o campo que deseja atualizar:
+ Escolha o campo que deseja atualizar, (escreva exatamente como está abaixo! ) :
 
- 1 - nome
- 2 - cpf
- 3 - endereco
- 4 - numero_residencial
- 5 - bairro
- 6 - cidade
- 7 - uf
- 8 - telefone
- 9 - nascimento
+ nome
+ cpf
+ endereco
+ numero_residencial
+ bairro
+ cidade
+ uf
+ telefone
+ nascimento
 `);
 
                 let coluna = await this.prompt("O que deseja atualizar? ")

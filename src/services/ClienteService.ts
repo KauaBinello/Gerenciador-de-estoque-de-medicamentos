@@ -65,16 +65,15 @@ export class ClienteService implements ICliente {
             console.log("A sigla do estado (UF) deve ser informada e conter 2 caracteres.");
             return;
         }
-        if (!/^\d{10,11}$/.test(telefone)) {
-            console.log('O telefone deve ser informado e conter 10 ou 11 dígitos numéricos. ')
-            return
-        }
-        if (!/^\d{4}\/\d{2}\/\d{2}$/.test(nascimentoStr)) {
-            console.log('Data de nascimento inválida. Use o formato YYYY/MM/DD.');
+        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(nascimentoStr)) {
+            console.log('Data de nascimento inválida. Use o formato DD/MM/YYYY.');
             return;
         }
 
-        const nascimento = new Date(nascimentoStr.replace(/\//g, '-'))
+        const [dia, mes, ano] = nascimentoStr.split('/');
+        const nascimentoFormatado = `${ano}-${mes}-${dia}`;
+
+        const nascimento = new Date(nascimentoFormatado);
 
         if (isNaN(nascimento.getTime())) {
             console.log('Data de nascimento inválida. Certifique-se de que a data inserida é válida.');
@@ -109,18 +108,20 @@ export class ClienteService implements ICliente {
         const colunaValida = ['nome', 'cpf', 'endereco', 'numero_residencial', 'bairro', 'cidade', 'uf', 'telefone', 'nascimento']
         const ufValida = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"]
 
-        if (!colunaValida.includes(coluna)) {
-            console.log("Coluna inválida ou não permitida!");
-            return
-        }
-
         const cpfExiste = await this.verificaCpf(cpf);
         if (!cpfExiste) {
-            return;
+            console.log('O CPF informado não está cadastrado.')
+            return
         } else {
+
+            if (!colunaValida.includes(coluna)) {
+                console.log("Coluna inválida ou não permitida!");
+                return
+            }
 
             switch (coluna) {
                 case 'nome':
+
                     if (!registro.trim()) {
                         console.log('O nome não pode ser deixado vazio. ')
                         return
@@ -130,7 +131,7 @@ export class ClienteService implements ICliente {
                 case 'cpf':
                     const cpfExiste = await this.verificaCpf(registro);
                     if (cpfExiste) {
-                        return;
+                        throw new Error('O CPF informado já está cadastrado.')
                     }
                     break;
 
@@ -177,18 +178,21 @@ export class ClienteService implements ICliente {
                     break;
 
                 case 'nascimento':
-                    if (!/^\d{4}\/\d{2}\/\d{2}$/.test(registro)) {
-                        console.log('Data de nascimento inválida. Use o formato YYYY/MM/DD.');
+                    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(registro)) {
+                        console.log('Data de nascimento inválida. Use o formato DD/MM/YYYY.');
                         return;
                     }
-            
-                    const nascimento = new Date(registro.replace(/\//g, '-'))
-            
+
+                    const [dia, mes, ano] = registro.split('/');
+                    const nascimentoFormatado = `${ano}-${mes}-${dia}`;
+
+                    const nascimento = new Date(nascimentoFormatado);
+
                     if (isNaN(nascimento.getTime())) {
                         console.log('Data de nascimento inválida. Certifique-se de que a data inserida é válida.');
                         return;
                     }
-            
+
                     const hoje = new Date();
                     if (nascimento > hoje) {
                         console.log('A data de nascimento não pode ser maior que a data de hoje.');
@@ -205,6 +209,7 @@ export class ClienteService implements ICliente {
         const cpfExiste = await this.verificaCpf(cpf)
 
         if (!cpfExiste) {
+            console.log('O CPF informado não está cadastrado.')
             return
         } else {
             await this.repo.deletarCliente(cpf)
