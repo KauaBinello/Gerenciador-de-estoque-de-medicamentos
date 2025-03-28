@@ -26,6 +26,18 @@ export class MedicamentoService implements IMedicamento {
         return lista.length > 0
     }
 
+    public async exibirID(nome: string): Promise<number[] | void> {
+
+        if (!nome.trim()) {
+            console.log('Informe o nome do cliente. ')
+            return
+        }
+        let id = await this.repo.exibirID(nome)
+        console.log(id)
+        return id
+
+    }
+
     public async inserirMedicamento(nome: string, embalagem: string, saldo: number, validadeStr: string) {
 
         if (!nome.trim()) {

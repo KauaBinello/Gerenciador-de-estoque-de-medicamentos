@@ -12,7 +12,7 @@ export interface IUsuario {
 
     inserirUsuario(nome: string, email: string, login: string, senha: string)
 
-    exibirID(nome: string): Promise<number[]>
+    exibirID(nome: string): Promise<number[] | void>
 
     buscarInformacoes(id: number): Promise<Usuario[]>
 

@@ -21,6 +21,10 @@ export class DistribuicaoService implements IDistribuicao{
     }
 
     public async distribuirMedicamento(medicamento_id: number, quantidade: number, saida: Date, usuario_id: number, cliente_id: number) {
+        if (!quantidade){
+            console.log('Informe a quantidade. ')
+            return
+        }
         await this.repo.distribuirMedicamento(medicamento_id, quantidade, saida, usuario_id, cliente_id);
     }
 

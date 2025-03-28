@@ -28,8 +28,16 @@ export class UsuarioService implements IUsuario {
         await this.repo.inserirUsuario(nome, email, login, senha)
     }
 
-    public async exibirID(nome: string): Promise<number[]> {
-        return await this.repo.exibirID(nome)
+    public async exibirID(nome: string): Promise<number[] | void> {
+
+        if (!nome.trim()) {
+            console.log('Informe o nome do cliente. ')
+            return
+        }
+
+        let id = await this.repo.exibirID(nome)
+        console.log (id)
+        return id
     }
 
     public async buscarInformacoes(id: number): Promise<Usuario[]> {

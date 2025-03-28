@@ -29,6 +29,19 @@ export class ClienteService implements ICliente {
         return lista.length > 0
     }
 
+    public async exibirID(cpf: string): Promise<number[] | void> {
+
+        if (!/^\d{11}$/.test(cpf)) {
+            console.log("CPF inválido! Deve conter exatamente 11 dígitos numéricos.")
+            return
+        }
+
+        let id = await this.repo.exibirID(cpf)
+        console.log(id)
+        return id
+
+    }
+
     public async inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimentoStr: string) {
 
         const ufValida = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"]
@@ -67,7 +80,7 @@ export class ClienteService implements ICliente {
             return;
         }
         if (!/^\d{2}\/\d{2}\/\d{4}$/.test(nascimentoStr)) {
-            console.log('Data de nascimento inválida. Use o formato DD/MM/YYYY.');
+            console.log('Data de nascimento inválida. Use o formato DD/MM/AAAA.');
             return;
         }
 
@@ -86,11 +99,9 @@ export class ClienteService implements ICliente {
             console.log('A data de nascimento não pode ser maior que a data de hoje.');
             return;
         }
-
         await this.repo.inserirCliente(nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, nascimento);
         console.log('Cliente inserido com sucesso! ');
     }
-
 
     public async buscarInformacoes(cpf: string) {
 
