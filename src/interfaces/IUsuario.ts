@@ -14,9 +14,9 @@ export interface IUsuario {
 
     exibirID(nome: string): Promise<number[] | void>
 
-    buscarInformacoes(id: number): Promise<Usuario[]>
+    buscarInformacoes(login: string): Promise<Usuario[] | void>
 
-    atualizarUsuario(id: number, coluna: string, registro: string): Promise<void>
+    atualizarUsuario(login: string, coluna: string, registro: string): Promise<void>
 
     deletarUsuario(id: number): Promise<void>
 }

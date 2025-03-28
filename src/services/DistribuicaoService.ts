@@ -26,6 +26,7 @@ export class DistribuicaoService implements IDistribuicao{
             return
         }
         await this.repo.distribuirMedicamento(medicamento_id, quantidade, saida, usuario_id, cliente_id);
+        console.log('Medicamento distribuído com sucesso.')
     }
 
     public async buscarDistribuicao(id: number): Promise<Distribuicao[]> {

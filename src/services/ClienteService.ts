@@ -220,6 +220,7 @@ export class ClienteService implements ICliente {
                         console.log('A data de nascimento não pode ser maior que a data de hoje.');
                         return;
                     }
+                    break
             }
         }
         await this.repo.atualizarCliente(cpf, coluna, registro);

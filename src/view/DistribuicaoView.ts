@@ -52,14 +52,14 @@ export class DistribuicaoMenu {
 
                 let saida = await new Date()
 
-                let usuario = await this.prompt('Qual o nome do usuario? ')
+                let usuario = await this.prompt('Qual o login do usuario? ')
                 let usuario_id = await this.usuario.exibirID(usuario)
 
                 let cliente = await this.prompt('Qual o CPF do cliente? ')
                 let cliente_id = await this.cliente.exibirID(cliente)
 
                 await this.distribuicao.distribuirMedicamento(medicamento_id[0], quantidade, saida, usuario_id[0], cliente_id[0])
-                console.log('Medicamento distruibuido com sucesso! ')
+
                 return this.distribuicaoMenu()
 
             case '3':

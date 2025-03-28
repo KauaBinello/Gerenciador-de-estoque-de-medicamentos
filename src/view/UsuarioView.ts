@@ -22,11 +22,10 @@ Selecione a opção desejada
 
  1: Listar usuários
  2: Cadastrar usuários
- 3: Buscar ID do usuário
- 4: Buscar informações do usuário
- 5: Atualizar usuário
- 6: Deletar usuário
- 7: Retornar ao menu principal
+ 3: Buscar informações do usuário
+ 4: Atualizar usuário
+ 5: Deletar usuário
+ 6: Retornar ao menu principal
         
         `)
 
@@ -38,42 +37,52 @@ Selecione a opção desejada
                 return this.usuarioMenu()
 
             case '2':
+
                 let nome = await this.prompt('Qual o nome do usuário? ')
                 let email = await this.prompt('Qual o e-mail do usuário? ')
                 let login = await this.prompt('Qual o login do usuário? ')
-                let senha = await this.prompt('Qual a senha de validade do usuário? ')
+                let senha = await this.prompt('Qual a senha do usuário? ')
+
                 await this.usuario.inserirUsuario(nome, email, login, senha)
-                console.log('Usuário inserido com sucesso! ')
+
                 return this.usuarioMenu()
 
             case '3':
-                let exibirPorNome = await this.prompt('Qual o nome do usuário que deseja procurar? ')
-                console.log(await this.usuario.exibirID(exibirPorNome))
+                let procurarPorLogin = await this.prompt('Qual o login do usuário que deseja procurar? ')
+                
+                await this.usuario.buscarInformacoes(procurarPorLogin)
+
                 return this.usuarioMenu()
 
             case '4':
-                let procurarPorNome = await this.prompt('Qual o nome do usuário que deseja procurar? ')
-                let procurarPorID = await this.usuario.exibirID(procurarPorNome)
-                console.table(await this.usuario.buscarInformacoes(procurarPorID[0]))
+                let atualizarPorLogin = await this.prompt('Qual o login do usuario que deseja atualizar? ')
+
+                                console.log(`
+
+ Escolha o campo que deseja atualizar (escreva exatamente como está abaixo! ) :
+
+ nome
+ email
+ login
+ senha
+`);
+
+                let coluna = await this.prompt("O que deseja atualizar? ")
+                let registro = await this.prompt("Para o que desejar atualizar? ")
+
+                await this.usuario.atualizarUsuario(atualizarPorLogin, coluna, registro)
+
                 return this.usuarioMenu()
 
             case '5':
-                let atualizarPorNome = await this.prompt('Qual o nome do usuario que deseja atualizar? ')
-                let atualizarPorID = await this.usuario.exibirID(atualizarPorNome)
-                let coluna = await this.prompt("O que deseja atualizar? ")
-                let registro = await this.prompt("Para o que desejar atualizar? ")
-                await this.usuario.atualizarUsuario(atualizarPorID[0], coluna, registro)
-                console.log('Usuário atualizado com sucesso')
+
+                let deletarPorLogin = await this.prompt('Qual o login do usuário que deseja deletar? ')
+
+                await this.usuario.deletarUsuario(deletarPorLogin)
+
                 return this.usuarioMenu()
 
             case '6':
-                let deletarPorNome = await this.prompt('Qual o nome do usuário que deseja deletar? ')
-                let deletarPorID = await this.usuario.exibirID(deletarPorNome)
-                await this.usuario.deletarUsuario(deletarPorID[0])
-                console.log('Usuário deletado com sucesso! ')
-                return this.usuarioMenu()
-
-            case '7':
                 return
 
             default:
