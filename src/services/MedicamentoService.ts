@@ -32,10 +32,7 @@ export class MedicamentoService implements IMedicamento {
             console.log('Informe o nome do cliente. ')
             return
         }
-        let id = await this.repo.exibirID(nome)
-        console.log(id)
-        return id
-
+        return await this.repo.exibirID(nome)
     }
 
     public async inserirMedicamento(nome: string, embalagem: string, saldo: number, validadeStr: string) {

@@ -50,7 +50,7 @@ export class ClienteMenu {
                 let cidade = await this.prompt('Qual a cidade do cliente? ');
                 let uf = (await this.prompt('Qual a UF do cliente? ')).toUpperCase();
                 let telefone = await this.prompt('Qual o telefone do cliente? ');
-                let nascimentoStr = await this.prompt('Qual a data de nascimento do cliente? (YYYY/MM/DD) ')
+                let nascimentoStr = await this.prompt('Qual a data de nascimento do cliente? (DD/MM/AAAA) ')
 
                 await this.cliente.inserirCliente(nome, cpf, endereco, numero_residencial, bairro, cidade, uf, telefone, nascimentoStr)
 

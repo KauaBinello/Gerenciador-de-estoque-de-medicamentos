@@ -11,15 +11,15 @@ export interface IDistribuicao {
 
     listarDistribuicoes(): Promise<Distribuicao[]>
 
-    distribuirMedicamento(medicamento_id: number, quantidade: number, saida: Date, usuario_id: number, cliente_id: number)
-    
-    buscarDistribuicao(id: number): Promise<Distribuicao[]>
+    distribuirMedicamento(nome: string, quantidade: number, saida: Date, usuario_id: string, cliente_id: string)
 
-    buscarPorCliente(id: number): Promise<Distribuicao[]>
+    buscarDistribuicao(id: number): Promise<Distribuicao[] | void>
 
-    buscarPorUsuario(id: number): Promise<Distribuicao[]>
+    buscarPorCliente(cpf: string): Promise<Distribuicao[] | void>
 
-    buscarPorMedicamento(id: number): Promise<Distribuicao[]>
+    buscarPorUsuario(login: string): Promise<Distribuicao[] | void>
 
-    buscarPorData(data1: Date, data2: Date): Promise<Distribuicao[]>
+    buscarPorMedicamento(nome: string): Promise<Distribuicao[] | void>
+
+    buscarPorData(data1: string, data2: string): Promise<Distribuicao[] | void>
 }

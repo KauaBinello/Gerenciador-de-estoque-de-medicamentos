@@ -36,10 +36,7 @@ export class ClienteService implements ICliente {
             return
         }
 
-        let id = await this.repo.exibirID(cpf)
-        console.log(id)
-        return id
-
+        return await this.repo.exibirID(cpf)
     }
 
     public async inserirCliente(nome: string, cpf: string, endereco: string, numero_residencial: string, bairro: string, cidade: string, uf: string, telefone: string, nascimentoStr: string) {

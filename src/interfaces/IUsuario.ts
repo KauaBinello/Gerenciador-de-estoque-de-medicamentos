@@ -18,5 +18,5 @@ export interface IUsuario {
 
     atualizarUsuario(login: string, coluna: string, registro: string): Promise<void>
 
-    deletarUsuario(id: number): Promise<void>
+    deletarUsuario(string): Promise<void>
 }

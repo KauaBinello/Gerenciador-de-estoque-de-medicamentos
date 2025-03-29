@@ -9,7 +9,7 @@ export class Database {
             user: 'postgres',       // Substitua pelo seu usuário
             host: 'localhost',         // Host do PostgreSQL
             database: 'ProjetoIntegrador',   // Nome do banco de dados
-            password: '4292',     // Substitua pela sua senha
+            password: '1234',     // Substitua pela sua senha
             port: 5432
         })
         return this.pool

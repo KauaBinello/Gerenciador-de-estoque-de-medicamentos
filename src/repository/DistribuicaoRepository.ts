@@ -44,9 +44,9 @@ export class DistribuicaoRepository {
         return lista
     }
 
-    public async buscarPorCliente(id: number): Promise<Distribuicao[]> {
-        const query = 'SELECT d.serial, d.medicamento_id, d.quantidade, d.saida, d.usuario_id, d.cliente_id FROM pi.distribuicoes d JOIN pi.clientes c ON c.id = d.cliente_id WHERE c.id = $1'
-        const busca = await this.pool.query(query, [id])
+    public async buscarPorCliente(cpf: string): Promise<Distribuicao[]> {
+        const query = 'SELECT d.serial, d.medicamento_id, d.quantidade, d.saida, d.usuario_id, d.cliente_id FROM pi.distribuicoes d JOIN pi.clientes c ON c.id = d.cliente_id WHERE c.cpf = $1'
+        const busca = await this.pool.query(query, [cpf])
 
         let lista: Distribuicao[] = []
         for (const row of busca.rows) {
@@ -57,9 +57,9 @@ export class DistribuicaoRepository {
     }
 
 
-    public async buscarPorUsuario(id: number): Promise<Distribuicao[]> {
-        const query = 'SELECT d.serial, d.medicamento_id, d.quantidade, d.saida, d.usuario_id, d.cliente_id FROM pi.distribuicoes d JOIN pi.usuario u ON u.id = d.usuario_id WHERE u.id = $1'
-        const busca = await this.pool.query(query, [id])
+    public async buscarPorUsuario(login: string): Promise<Distribuicao[]> {
+        const query = 'SELECT d.serial, d.medicamento_id, d.quantidade, d.saida, d.usuario_id, d.cliente_id FROM pi.distribuicoes d JOIN pi.usuarios u ON u.id = d.usuario_id WHERE u.login = $1'
+        const busca = await this.pool.query(query, [login])
 
         let lista: Distribuicao[] = []
         for (const row of busca.rows) {
@@ -69,9 +69,9 @@ export class DistribuicaoRepository {
         return lista
     }
 
-    public async buscarPorMedicamento(id: number): Promise<Distribuicao[]> {
-        const query = 'SELECT d.serial, d.medicamento_id, d.quantidade, d.saida, d.usuario_id, d.cliente_id FROM pi.distribuicoes d JOIN pi.medicamentos m ON m.id = d.medicamento_id WHERE m.id = $1'
-        const busca = await this.pool.query(query, [id])
+    public async buscarPorMedicamento(nome: string): Promise<Distribuicao[]> {
+        const query = 'SELECT d.serial, d.medicamento_id, d.quantidade, d.saida, d.usuario_id, d.cliente_id FROM pi.distribuicoes d JOIN pi.medicamentos m ON m.id = d.medicamento_id WHERE m.nome = $1'
+        const busca = await this.pool.query(query, [nome])
 
         let lista: Distribuicao[] = []
         for (const row of busca.rows) {

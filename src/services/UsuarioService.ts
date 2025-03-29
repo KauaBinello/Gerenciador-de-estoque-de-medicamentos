@@ -66,7 +66,6 @@ export class UsuarioService implements IUsuario {
             console.log('Usuário não cadastado no sistema.');
             return;
         }
-
         return await this.repo.exibirID(login)
     }
 
@@ -160,9 +159,8 @@ export class UsuarioService implements IUsuario {
             console.log('Login não cadastrado no sistema.');
             return;
         }
-        
+
         await this.repo.deletarUsuario(login)
         console.log('Usuário deletado com sucesso. ')
     }
-
 }
