@@ -30,9 +30,24 @@ export class DistribuicaoService implements IDistribuicao {
 
     public async distribuirMedicamento(nome: string, quantidade: number, saida: Date, usuario_nome: string, cliente_nome: string) {
 
+        if(!nome){
+            console.log('Informa o nome do medicamento.')
+            return
+        }
+        if (!quantidade) {
+            console.log('Informe a quantidade. ')
+            return
+        }
+
         let medicamento_id = Number(await this.medicamento.exibirID(nome))
         if (!medicamento_id) {
             console.log('Medicamento não encontrado.')
+            return
+        }
+        
+        let verificaoSaldo = await this.medicamento.verificaSaldo(nome)
+        if (quantidade > verificaoSaldo) {
+            console.log('Quantidade indisponível.')
             return
         }
 
@@ -44,11 +59,6 @@ export class DistribuicaoService implements IDistribuicao {
         let cliente_id = Number(await this.cliente.exibirID(cliente_nome))
         if (!cliente_id) {
             console.log('Cliente não encontrado.')
-        }
-
-        if (!quantidade) {
-            console.log('Informe a quantidade. ')
-            return
         }
 
         await this.repo.distribuirMedicamento(medicamento_id, quantidade, saida, usuario_id, cliente_id);

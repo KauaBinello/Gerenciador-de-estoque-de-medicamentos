@@ -36,6 +36,17 @@ export class MedicamentoRepository {
         return lista
     }
 
+    public async verificaSaldo(nome) {
+        let query = 'SELECT m.saldo FROM pi.medicamentos m WHERE nome = $1'
+        const saldo = await this.pool.query(query, [nome])
+
+        let lista: number[] = []
+        for (const row of saldo.rows) {
+            lista.push(row.saldo)
+        }
+        return lista
+    }
+
     public async exibirID(nome: string): Promise<number[]> {
         const query = 'SELECT id FROM pi.medicamentos WHERE nome ilike $1'
         const id = await this.pool.query(query, [nome])

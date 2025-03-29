@@ -26,13 +26,26 @@ export class MedicamentoService implements IMedicamento {
         return lista.length > 0
     }
 
+    public async verificaSaldo(nome) {
+
+        let saldo = Number(await this.repo.verificaSaldo(nome))
+        if (saldo > 0) {
+            return saldo
+        } else {
+            console.log('Medicamento indisponível no momento.')
+            return 0
+        }
+    }
+
     public async exibirID(nome: string): Promise<number[] | void> {
 
         if (!nome.trim()) {
             console.log('Informe o nome do cliente. ')
             return
         }
-        return await this.repo.exibirID(nome)
+        let id = await this.repo.exibirID(nome)
+        return id
+
     }
 
     public async inserirMedicamento(nome: string, embalagem: string, saldo: number, validadeStr: string) {
@@ -103,7 +116,6 @@ export class MedicamentoService implements IMedicamento {
             console.log(`O medicamento informado não está cadastrado.`)
             return
         } else {
-
             if (!colunaValida.includes(coluna)) {
                 console.log("Coluna inválida ou não permitida!");
                 return

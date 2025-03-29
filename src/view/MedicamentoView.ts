@@ -83,8 +83,9 @@ export class MedicamentoMenu {
 
                 return this.medicamentoMenu()
 
-                case '6':
-                    return
+            case '6':
+                return
+                
             default:
 
                 console.log("Opção inválida! Tente novamente.");
