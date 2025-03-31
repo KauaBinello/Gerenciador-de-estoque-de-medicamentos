@@ -24,6 +24,11 @@ export class MedicamentoRepository {
         return listaMedicamento
     }
 
+    public async entradaMedicamento(nome: string, quantidade: number) {
+        const query = `UPDATE pi.medicamentos SET saldo = saldo + $1 WHERE nome = $2`
+        const result = await this.pool.query(query,[quantidade, nome])
+    }
+
     public async verificaRetorno(nome) {
         let query = 'SELECT * FROM pi.medicamentos WHERE nome = $1'
         const busca = await this.pool.query(query, [nome])

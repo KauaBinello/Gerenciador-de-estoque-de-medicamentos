@@ -20,6 +20,31 @@ export class MedicamentoService implements IMedicamento {
         return await this.repo.listarMedicamentos()
     }
 
+    public async entradaMedicamento(nome: string, quantidade: any) {
+        
+        const qtd = Number(quantidade)
+    
+        if (!nome.trim()) {
+            console.log('Informe o nome do medicamento.');
+            return;
+        }
+    
+        const nomeExiste = await this.verificaRetorno(nome);
+    
+        if (!nomeExiste) {
+            console.log('O medicamento informado não está cadastrado.');
+            return;
+        }
+    
+        if (isNaN(qtd) || qtd <= 0) {
+            console.log('Informe uma quantidade válida.');
+            return;
+        }
+    
+        await this.repo.entradaMedicamento(nome, qtd);
+        console.log('Saldo atualizado.');
+    }
+
     public async verificaRetorno(nome): Promise<Boolean> {
 
         let lista: Medicamento[] = await this.repo.verificaRetorno(nome)
@@ -43,6 +68,8 @@ export class MedicamentoService implements IMedicamento {
             console.log('Informe o nome do cliente. ')
             return
         }
+
+
         let id = await this.repo.exibirID(nome)
         return id
 
@@ -52,6 +79,12 @@ export class MedicamentoService implements IMedicamento {
 
         if (!nome.trim()) {
             console.log('Informe o nome do medicamento. ')
+            return
+        }
+        const nomeExiste = await this.verificaRetorno(nome)
+
+        if (nomeExiste) {
+            console.log(`O medicamento informado já está cadastrado.`)
             return
         }
 

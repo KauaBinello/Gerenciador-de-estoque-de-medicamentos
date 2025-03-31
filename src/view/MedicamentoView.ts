@@ -20,10 +20,11 @@ export class MedicamentoMenu {
 
  1: Listar medicamentos
  2: Cadastrar medicamentos
- 3: Buscar informações do medicamento
- 4: Atualizar medicamento
- 5: Deletar medicamento
- 6: Retornar ao menu principal
+ 3: Entrada de medicamento
+ 4: Buscar informações do medicamento
+ 5: Atualizar medicamento
+ 6: Deletar medicamento
+ 7: Retornar ao menu principal
 
         `)
 
@@ -48,13 +49,22 @@ export class MedicamentoMenu {
 
             case '3':
 
+                let entradaNome = await this.prompt('Qual o nome do medicamento? ')
+                let entradaQuantidade = await this.prompt('Qual a quantidade? ')
+
+                await this.medicamento.entradaMedicamento(entradaNome, entradaQuantidade)
+
+                return this.medicamentoMenu()
+
+            case '4':
+
                 let procurarPorNome = await this.prompt('Qual o nome do medicamento que deseja procurar? ')
 
                 await this.medicamento.buscarInformacoes(procurarPorNome)
 
                 return this.medicamentoMenu()
 
-            case '4':
+            case '5':
 
                 let atualizarPorNome = await this.prompt('Qual o nome do medicamento que deseja atualizar? ')
 
@@ -75,7 +85,7 @@ export class MedicamentoMenu {
 
                 return this.medicamentoMenu()
 
-            case '5':
+            case '6':
 
                 let deletarPorNome = await this.prompt('Qual o nome do medicamento que deseja deletar? ')
 
@@ -83,7 +93,7 @@ export class MedicamentoMenu {
 
                 return this.medicamentoMenu()
 
-            case '6':
+            case '7':
                 return
                 
             default:
