@@ -13,7 +13,7 @@ export class UsuarioRepository {
 
     public async listarUsuarios(): Promise<Usuario[]> {
 
-        const query = "SELECT * FROM pi.usuarios"
+        const query = "SELECT * FROM pi.usuarios ORDER BY id ASC"
         const result = await this.pool.query(query)
 
         const listaUsuarios: Usuario[] = []

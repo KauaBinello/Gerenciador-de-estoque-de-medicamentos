@@ -92,8 +92,10 @@ export class MedicamentoService implements IMedicamento {
             console.log('As informações sobre a embalagem não podem ser deixadas vazias. ')
             return
         }
-        if (typeof saldo !== "number" || isNaN(saldo)) {
-            console.log('O saldo não pode estar vazio e/ou deve ser um número válido.');
+        let qtd = Number(saldo)
+
+        if (isNaN(qtd) || qtd <= 0) {
+            console.log('Informe uma quantidade válida.');
             return;
         }
 
@@ -118,7 +120,7 @@ export class MedicamentoService implements IMedicamento {
             console.log('O medicamento deve ter pelo menos 2 meses antes do vencimento.');
             return;
         }
-        await this.repo.inserirMedicamento(nome, embalagem, saldo, validade)
+        await this.repo.inserirMedicamento(nome, embalagem, qtd, validade)
         console.log('Medicamento inserido com sucesso! ')
     }
 

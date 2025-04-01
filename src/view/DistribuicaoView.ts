@@ -44,6 +44,8 @@ export class DistribuicaoMenu {
 
                 console.table(await this.distribuicao.listarDistribuicoes())
 
+                return this.distribuicaoMenu() //oi 
+
                 break
 
             case '2':

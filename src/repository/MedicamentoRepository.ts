@@ -12,7 +12,7 @@ export class MedicamentoRepository {
 
     public async listarMedicamentos(): Promise<Medicamento[]> {
 
-        const query = 'SELECT * FROM pi.medicamentos'
+        const query = 'SELECT * FROM pi.medicamentos ORDER BY id ASC'
         const result = await this.pool.query(query)
 
         const listaMedicamento: Medicamento[] = []
@@ -25,7 +25,7 @@ export class MedicamentoRepository {
     }
 
     public async entradaMedicamento(nome: string, quantidade: number) {
-        const query = `UPDATE pi.medicamentos SET saldo = saldo + $1 WHERE nome = $2`
+        const query = `UPDATE pi.medicamentos SET saldo = saldo + $1 WHERE nome ilike $2`
         const result = await this.pool.query(query,[quantidade, nome])
     }
 

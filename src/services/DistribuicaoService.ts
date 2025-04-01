@@ -34,9 +34,11 @@ export class DistribuicaoService implements IDistribuicao {
             console.log('Informa o nome do medicamento.')
             return
         }
-        if (!quantidade) {
-            console.log('Informe a quantidade. ')
-            return
+        let qtd = Number(quantidade)
+
+        if (isNaN(qtd) || qtd <= 0) {
+            console.log('Informe uma quantidade válida.');
+            return;
         }
 
         let medicamento_id = Number(await this.medicamento.exibirID(nome))
@@ -46,7 +48,7 @@ export class DistribuicaoService implements IDistribuicao {
         }
         
         let verificaoSaldo = await this.medicamento.verificaSaldo(nome)
-        if (quantidade > verificaoSaldo) {
+        if (qtd > verificaoSaldo) {
             console.log('Quantidade indisponível.')
             return
         }
@@ -61,7 +63,7 @@ export class DistribuicaoService implements IDistribuicao {
             console.log('Cliente não encontrado.')
         }
 
-        await this.repo.distribuirMedicamento(medicamento_id, quantidade, saida, usuario_id, cliente_id);
+        await this.repo.distribuirMedicamento(medicamento_id, qtd, saida, usuario_id, cliente_id);
         console.log('Medicamento distribuído com sucesso.')
     }
 

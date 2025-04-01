@@ -12,7 +12,7 @@ export class DistribuicaoRepository {
 
     public async listarDistribuicoes(): Promise<Distribuicao[]> {
 
-        const query = "SELECT * FROM pi.distribuicoes"
+        const query = "SELECT * FROM pi.distribuicoes ORDER BY serial ASC"
         const result = await this.pool.query(query)
 
         const listaDistribuicao: Distribuicao[] = []
