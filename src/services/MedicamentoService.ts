@@ -84,7 +84,7 @@ export class MedicamentoService implements IMedicamento {
         const nomeExiste = await this.verificaRetorno(nome)
 
         if (nomeExiste) {
-            console.log(`O medicamento informado já está cadastrado.`)
+            console.log(`O medicamento informado já está cadas trado.`)
             return
         }
 
