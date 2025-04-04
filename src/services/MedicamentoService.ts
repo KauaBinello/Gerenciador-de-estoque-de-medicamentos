@@ -171,8 +171,13 @@ export class MedicamentoService implements IMedicamento {
                         break
 
                     case 'saldo':
+                        let qtd = Number(registro)
 
-                        const saldoConvertido = Number(registro)
+                        if (isNaN(qtd) || qtd <= 0) {
+                            console.log('Informe uma quantidade válida.');
+                            return;
+                        }
+                        const saldoConvertido = Number(qtd)
                         if (typeof saldoConvertido !== "number" || isNaN(saldoConvertido)) {
                             console.log('O saldo não pode estar vazio e/ou deve ser um número válido.');
                             return;

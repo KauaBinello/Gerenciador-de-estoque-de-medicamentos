@@ -56,11 +56,13 @@ export class DistribuicaoService implements IDistribuicao {
         let usuario_id = Number(await this.usuario.exibirID(usuario_nome))
         if (!usuario_id) {
             console.log('Usuário não encontrado.')
+            return
         }
 
         let cliente_id = Number(await this.cliente.exibirID(cliente_nome))
         if (!cliente_id) {
             console.log('Cliente não encontrado.')
+            return
         }
 
         await this.repo.distribuirMedicamento(medicamento_id, qtd, saida, usuario_id, cliente_id);
